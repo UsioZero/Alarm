@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -6,7 +8,7 @@ class Allarm extends StatefulWidget {
 
   Widget build(BuildContext context) {
     return  MaterialApp(
-      title: 'Clock',
+      title: 'Timer',
       theme: ThemeData(
         primarySwatch: Colors.yellow,
         textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white))
@@ -24,12 +26,15 @@ class _Allarm extends State<Allarm> {
   var initSetAndroid;
   var initSetIos;
   var initSet;
+  int _timerTime;
 
-    void _showNotificaton() async{
-      await _demoNotify();
+
+  void _showNotificaton() async{
+    await _demoNotify();
   }
 
   Future<void> _demoNotify() async{
+    var _durationTime = DateTime.now().add(Duration(seconds: 10));
     var androidChannelSpecifics = AndroidNotificationDetails(
       'channel id', 
       'channel name', 
@@ -41,10 +46,11 @@ class _Allarm extends State<Allarm> {
     var iOSChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = 
       NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
+    await flutterLocalNotificationsPlugin.schedule(
       0, 
       "Time is over", 
       "It's adventure time", 
+      _durationTime,
       platformChannelSpecifics,
       payload: 'test payload'
     );
