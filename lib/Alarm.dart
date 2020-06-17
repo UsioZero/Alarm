@@ -38,6 +38,11 @@ class _Alarm extends State<Alarm> {
       (int.parse(_timeInput[7])) + (int.parse(_timeInput[6]))*10 + 
       60*((int.parse(_timeInput[4])) + (int.parse(_timeInput[3]))*10) +
       3600*((int.parse(_timeInput[1])) + (int.parse(_timeInput[0]))*10);
+<<<<<<< HEAD:lib/Alarm.dart
+=======
+    print(_timeInput);
+    print(_timerTime);
+>>>>>>> global-notify:lib/Allarm.dart
     _showNotificaton();
   }
 
