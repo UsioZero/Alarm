@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Alarm.dart';
+import 'package:allarm/screens/alarm.dart';
 
 void main() => runApp(MyApp());
 

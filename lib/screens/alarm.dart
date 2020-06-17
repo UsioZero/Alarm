@@ -1,8 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
+import 'second_route.dart';
+import 'package:allarm/show_notify.dart';
 
 class Alarm extends StatefulWidget {
 
@@ -17,18 +18,18 @@ class Alarm extends StatefulWidget {
   }
 
   @override
-  _Alarm createState() => _Alarm();
+  _AlarmState createState() => _AlarmState();
 }
 
-class _Alarm extends State<Alarm> {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = 
-      new FlutterLocalNotificationsPlugin();
+class _AlarmState extends State<Alarm> {
+
+  ShowNotify showNotifyElement = ShowNotify();
   TextEditingController _timeController = TextEditingController();
   var initSetAndroid;
   var initSetIos;
   var initSet;
-  int _timerTime = 10;
   String _timeInput;
+  int _timerTime = 10;
 
   void _buttonPressed(){
     _timeInput = _timeController.text;
@@ -38,34 +39,7 @@ class _Alarm extends State<Alarm> {
       (int.parse(_timeInput[7])) + (int.parse(_timeInput[6]))*10 + 
       60*((int.parse(_timeInput[4])) + (int.parse(_timeInput[3]))*10) +
       3600*((int.parse(_timeInput[1])) + (int.parse(_timeInput[0]))*10);
-    _showNotificaton();
-  }
-
-  void _showNotificaton() async{
-    await _demoNotify();
-  }
-
-  Future<void> _demoNotify() async{
-    var _durationTime = DateTime.now().add(Duration(seconds: _timerTime));
-    var androidChannelSpecifics = AndroidNotificationDetails(
-      'channel id', 
-      'channel name', 
-      'channel description',
-      importance: Importance.Max, 
-      priority: Priority.High, 
-      ticker: 'test ticker'
-      );
-    var iOSChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = 
-      NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(
-      0, 
-      "Time is over", 
-      "It's adventure time", 
-      _durationTime,
-      platformChannelSpecifics,
-      payload: 'test payload'
-    );
+      showNotifyElement.showNotify(_timerTime);
   }
 
   @override
@@ -78,7 +52,7 @@ class _Alarm extends State<Alarm> {
           onDidReceiveLocalNotification: onDidReceiveLocalNotification
         );
     initSet = new InitializationSettings(initSetAndroid, initSetIos);
-    flutterLocalNotificationsPlugin.initialize(
+    showNotifyElement.flutterLocalNotificationsPlugin.initialize(
       initSet,
       onSelectNotification: onSelectNotification
     );
@@ -187,7 +161,7 @@ class _Alarm extends State<Alarm> {
       );
     }
 
-    Widget _timeSet(String label){
+    Widget _timeSet(){
       return Container(
         child: Column(
           children: <Widget>[
@@ -217,7 +191,7 @@ class _Alarm extends State<Alarm> {
       body:  Column(
           children: <Widget>[
             _logo(),
-            _timeSet('TIME')
+            _timeSet()
           ]
         )
       // floatingActionButton: FloatingActionButton(
@@ -226,24 +200,4 @@ class _Alarm extends State<Alarm> {
       // ), 
     );
   }
-}
-
-class SecondRoute extends StatelessWidget{
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Timer')),
-      body: Container(
-        child: Center(
-          child: RaisedButton(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text('Back'),
-              onPressed: (){Navigator.pop(context);},
-            ),
-        ),
-      )
-    );
-  }
-  
 }
