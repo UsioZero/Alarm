@@ -26,7 +26,7 @@ class _Allarm extends State<Allarm> {
   var initSetAndroid;
   var initSetIos;
   var initSet;
-  int _timerTime;
+  int _timerTime = 10;
 
 
   void _showNotificaton() async{
@@ -34,7 +34,7 @@ class _Allarm extends State<Allarm> {
   }
 
   Future<void> _demoNotify() async{
-    var _durationTime = DateTime.now().add(Duration(seconds: 10));
+    var _durationTime = DateTime.now().add(Duration(seconds: _timerTime));
     var androidChannelSpecifics = AndroidNotificationDetails(
       'channel id', 
       'channel name', 
@@ -119,17 +119,27 @@ class _Allarm extends State<Allarm> {
           ),
       ),
       body: Container(
+        width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            
+            FlatButton(
+                color: Colors.yellow,
+                onPressed: _showNotificaton,
+                child: Text(
+                  'Add timer',
+                  style: TextStyle(
+                    
+                  ),
+                ),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showNotificaton,
-        child: Icon(Icons.alarm_on),
-      ), 
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _showNotificaton,
+      //   child: Icon(Icons.alarm_on),
+      // ), 
     );
   }
 }
