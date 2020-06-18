@@ -30,7 +30,7 @@ class _AlarmState extends State<Alarm> {
   var initSet;
   String _timeInput;
   int _timerTime = 10;
-
+  
   void _buttonPressed(){
     _timeInput = _timeController.text;
     _timeController.clear();
@@ -169,7 +169,7 @@ class _AlarmState extends State<Alarm> {
               padding: EdgeInsets.only(bottom : 0, top:20),
               child: _input(
                 Icon(Icons.hourglass_empty),
-                '01:23:45',
+                '23.04.2020 01:23:45',
                 _timeController
               )
             ),

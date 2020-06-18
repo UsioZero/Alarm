@@ -1,10 +1,10 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+
 class ShowNotify{
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = 
         new FlutterLocalNotificationsPlugin();
-
 
   Future<void> showNotify(int _timerTime) async{
       var _durationTime = DateTime.now().add(Duration(seconds: _timerTime));
@@ -28,4 +28,5 @@ class ShowNotify{
         payload: 'test payload'
       );
     }
+
 }
