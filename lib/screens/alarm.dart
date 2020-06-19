@@ -9,7 +9,7 @@ class Alarm extends StatefulWidget {
 
   Widget build(BuildContext context) {
     return  MaterialApp(
-      title: 'Timer',
+      title: 'Alarm',
       theme: ThemeData(
         primarySwatch: Colors.yellow,
         textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white))
@@ -104,7 +104,7 @@ class _AlarmState extends State<Alarm> {
         color: Colors.yellow,
         onPressed: _buttonPressed,
         child: Text(
-          'Add timer',
+          'Add allarm',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -119,7 +119,7 @@ class _AlarmState extends State<Alarm> {
        child: Container(
           child: Align(
             child: Text(
-              'TIMER',
+              'ALARM',
               style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold, color: Colors.black),
               )
           )
@@ -169,7 +169,7 @@ class _AlarmState extends State<Alarm> {
               padding: EdgeInsets.only(bottom : 0, top:20),
               child: _input(
                 Icon(Icons.hourglass_empty),
-                '23.04.2020 01:23:45',
+                '01:23:45 26-07-2020',
                 _timeController
               )
             ),
@@ -182,7 +182,7 @@ class _AlarmState extends State<Alarm> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Timer'),
+        title: Text('Alarm'),
         leading: Container(
           child: Icon(Icons.alarm, color: Colors.black87),
           padding: EdgeInsets.only(right: 5),               
