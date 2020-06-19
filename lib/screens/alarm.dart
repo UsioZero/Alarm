@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'dart:async';
 import 'second_route.dart';
 import 'package:allarm/show_notify.dart';
@@ -24,22 +25,42 @@ class Alarm extends StatefulWidget {
 class _AlarmState extends State<Alarm> {
 
   ShowNotify showNotifyElement = ShowNotify();
-  TextEditingController _timeController = TextEditingController();
+  DateTime _dateTime;
+  TimeOfDay _timeOfDay;
+  int _timerTime = 10;
   var initSetAndroid;
   var initSetIos;
   var initSet;
-  String _timeInput;
-  int _timerTime = 10;
   
   void _buttonPressed(){
-    _timeInput = _timeController.text;
-    _timeController.clear();
+    _dateTimeSet(context);
 
-      _timerTime = 
-      (int.parse(_timeInput[7])) + (int.parse(_timeInput[6]))*10 + 
-      60*((int.parse(_timeInput[4])) + (int.parse(_timeInput[3]))*10) +
-      3600*((int.parse(_timeInput[1])) + (int.parse(_timeInput[0]))*10);
-      showNotifyElement.showNotify(_timerTime);
+      // _timerTime = 
+      // (int.parse(_timeInput[7])) + (int.parse(_timeInput[6]))*10 + 
+      // 60*((int.parse(_timeInput[4])) + (int.parse(_timeInput[3]))*10) +
+      // 3600*((int.parse(_timeInput[1])) + (int.parse(_timeInput[0]))*10);
+      // showNotifyElement.showNotify(_timerTime);
+  }
+
+  Future<Null> _dateTimeSet(BuildContext context) async{
+   await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2100)
+    ).then((value) {
+      setState(() {
+        _dateTime = value;
+      });
+    });
+    await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now()
+    ).then((value) {
+      setState(() {
+        _timeOfDay = value;
+      });
+    });
   }
 
   @override
@@ -59,9 +80,6 @@ class _AlarmState extends State<Alarm> {
   }
 
   Future onSelectNotification(String payload) async{
-    if(payload != null){
-      debugPrint('Notify payload: $payload');
-    }
     await Navigator.push(
       context, 
       new MaterialPageRoute(builder: (context)=> new SecondRoute())
@@ -104,7 +122,7 @@ class _AlarmState extends State<Alarm> {
         color: Colors.yellow,
         onPressed: _buttonPressed,
         child: Text(
-          'Add allarm',
+          'Add alarm',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -127,53 +145,57 @@ class _AlarmState extends State<Alarm> {
       );
     }
 
-    Widget _input(Icon icon, String hint, TextEditingController controller){
-      return Container(
-        padding: EdgeInsets.only(left: 20, right: 20),
-        child: TextField(
-          controller: controller,
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-          ),
-          decoration: InputDecoration(
-            hintStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black38
-            ),
-            hintText: hint,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 3)
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black54, width: 1)
-            ),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(left: 10, right: 10), 
-              child: IconTheme(
-                data: IconThemeData(color: Colors.blue),
-                child: icon,
-              ),
-            )
-          ),
-        ),
-      );
-    }
-
-    Widget _timeSet(){
+    // Widget _input(Icon icon, String hint, TextEditingController controller){
+    //   return Container(
+    //     padding: EdgeInsets.only(left: 20, right: 20),
+    //     child: TextField(
+    //       controller: controller,
+    //       style: TextStyle(
+    //         fontSize: 20,
+    //         color: Colors.black,
+    //       ),
+    //       decoration: InputDecoration(
+    //         hintStyle: TextStyle(
+    //           fontSize: 20,
+    //           fontWeight: FontWeight.bold,
+    //           color: Colors.black38
+    //         ),
+    //         hintText: hint,
+    //         focusedBorder: OutlineInputBorder(
+    //           borderSide: BorderSide(color: Colors.black, width: 3)
+    //         ),
+    //         enabledBorder: OutlineInputBorder(
+    //           borderSide: BorderSide(color: Colors.black54, width: 1)
+    //         ),
+    //         prefixIcon: Padding(
+    //           padding: EdgeInsets.only(left: 10, right: 10), 
+    //           child: IconTheme(
+    //             data: IconThemeData(color: Colors.blue),
+    //             child: icon,
+    //           ),
+    //         )
+    //       ),
+    //     ),
+    //   );
+    // }
+  
+    Widget _dateTimeSet(){
       return Container(
         child: Column(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(bottom : 0, top:20),
-              child: _input(
-                Icon(Icons.hourglass_empty),
-                '01:23:45 26-07-2020',
-                _timeController
-              )
+              child:  Text(
+                _timeOfDay == null? 'not set yet ' 
+                : (DateFormat("dd-MM-yyyy").format(_dateTime) 
+                + " "
+                + _timeOfDay.toString().substring(10,15)).toString(), 
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            button()
           ],
         ),
       );
@@ -191,7 +213,8 @@ class _AlarmState extends State<Alarm> {
       body:  Column(
           children: <Widget>[
             _logo(),
-            _timeSet()
+            _dateTimeSet(),
+            button()
           ]
         )
       // floatingActionButton: FloatingActionButton(
