@@ -1,4 +1,4 @@
-name: allarm
+name: alarm
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -29,6 +29,7 @@ dependencies:
   intl: ^0.15.7
   overlay_support: ^1.0.0
   flutter_local_notifications: ^1.4.4+1
+  day: ^0.5.5
 
 dev_dependencies:
   flutter_test:
