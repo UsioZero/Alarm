@@ -25,14 +25,15 @@ class SimpleNotification {
         onSelectNotification: androidCallback);
   }
 
-  void notify(DateTime dayTime) {
+  void notify(DateTime dayTime, int id) {
+    print('When pick ${dayTime.second}');
     _flutterLocalNotificationsPlugin.schedule(
-        0,
+        id,
         "Time is over",
         "It's adventure time",
         dayTime,
-        //  Day(dayTime.weekday), 
+        //  Day(dayTime.weekday),
         // Time(dayTime.hour, dayTime.minute),
-         _notificationDetails);
+        _notificationDetails);
   }
 }
