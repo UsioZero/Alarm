@@ -22,13 +22,6 @@ class AlarmsScreenState extends State<AlarmsScreen> {
   TimeOfDay _timeOfDay;
   String _timerTimeString = 'not set yet';
 
-  int counter = 0;
-
-  AlarmsScreenState() {
-    simpleNotifications.add(new SimpleNotification(
-        _onAndroidSelectNotification, _onIOSSelectNotification));
-  }
-
   void _buttonPressed() {
     _dateSet(context).then((value) {
       _timeSet(context).then((value) {
@@ -41,24 +34,11 @@ class AlarmsScreenState extends State<AlarmsScreen> {
     setState(() {
       selectedTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
           _timeOfDay.hour, _timeOfDay.minute);
-      // selectedTime2 = DateTime(_dateTime.year, _dateTime.month,
-      //     _dateTime.day, _timeOfDay.hour, _timeOfDay.minute, 5);
       _timerTimeString = DateFormat('dd MMMM yyyy HH:mm').format(selectedTime);
     });
-
-    simpleNotifications.last.notify(selectedTime, simpleNotifications.length);
     simpleNotifications.add(new SimpleNotification(
         _onAndroidSelectNotification, _onIOSSelectNotification));
-    simpleNotifications.last.notify(DateTime(
-        selectedTime.year,
-        selectedTime.month,
-        selectedTime.day,
-        selectedTime.hour,
-        selectedTime.minute,
-        5),
-        simpleNotifications.length);
-    print('Length: ${simpleNotifications.length}');
-    // simpleNotifications[1].notify(selectedTime2);
+    simpleNotifications.last.notify(selectedTime, simpleNotifications.length);
   }
 
   Future<Null> _dateSet(BuildContext context) async {
@@ -165,6 +145,7 @@ class AlarmsScreenState extends State<AlarmsScreen> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

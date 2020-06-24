@@ -6,9 +6,10 @@ class SimpleNotification {
           'channel id', 'channel name', 'channel description',
           importance: Importance.Max,
           priority: Priority.High,
-          ticker: 'test ticker');
+          ticker: 'test ticker',
+          sound: RawResourceAndroidNotificationSound('alarm_sound'));
   static const IOSNotificationDetails _iosDetails = IOSNotificationDetails();
-  static const NotificationDetails _notificationDetails =
+  NotificationDetails _notificationDetails =
       NotificationDetails(_androidDetails, _iosDetails);
 
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
@@ -26,7 +27,6 @@ class SimpleNotification {
   }
 
   void notify(DateTime dayTime, int id) {
-    print('When pick ${dayTime.second}');
     _flutterLocalNotificationsPlugin.schedule(
         id,
         "Time is over",

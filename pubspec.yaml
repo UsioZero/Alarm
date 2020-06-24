@@ -30,6 +30,7 @@ dependencies:
   overlay_support: ^1.0.0
   flutter_local_notifications: ^1.4.4+1
   day: ^0.5.5
+  day_selector: ^1.0.0
 
 dev_dependencies:
   flutter_test:
