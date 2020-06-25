@@ -1,7 +1,7 @@
 // LIBRARIES
 import 'package:flutter/material.dart';
 // COMPONENTS
-import 'package:alarm/screens/alarms/alarms.dart';
+import 'screens/alarms/alarm_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.yellow,
           textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white))
         ),
-      home: AlarmsScreen(),
+      home: AlarmList(),
     );  }
 
 }
