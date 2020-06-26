@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 class AlarmAlertScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,8 +3,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SimpleNotification {
   DateTime _dateTime = DateTime.now();
-  
   get dateTime => _dateTime;
+
+  var cardHeight = 0.0;
+  bool isShowNotify = true;
+
   static const AndroidNotificationDetails _androidDetails =
       AndroidNotificationDetails(
           'channel id', 'channel name', 'channel description',
@@ -20,6 +23,8 @@ class SimpleNotification {
 
   SimpleNotification(androidCallback, iosCallback) {
     this._dateTime = _dateTime;
+    this.cardHeight = cardHeight;
+    this.isShowNotify = isShowNotify;
     var initSetAndroid = new AndroidInitializationSettings('hourglasses');
     var initSetIos = new IOSInitializationSettings(
         onDidReceiveLocalNotification: iosCallback);
@@ -33,6 +38,7 @@ class SimpleNotification {
 
   void notify(DateTime dayTime, int id) {
     _dateTime =dayTime;
+    if(isShowNotify)
     _flutterLocalNotificationsPlugin.schedule(
         id,
         "Time is over",
