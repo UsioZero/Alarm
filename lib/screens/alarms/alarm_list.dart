@@ -205,32 +205,41 @@ class AlarmListState extends State<AlarmList> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               verticalDirection: VerticalDirection.down,
                               children: <Widget>[
-                                RaisedButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      simpleNotifications[i].cancel(i);
-                                      simpleNotifications.removeAt(i);
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
+                                Flexible(
+                                  flex: 1,
+                                  child: RaisedButton(
                                     color: Colors.red,
+                                    textColor: Colors.white,
+                                    child: Text('delete',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        )),
+                                    onPressed: () {
+                                      setState(() {
+                                        simpleNotifications[i].cancel(i);
+                                        simpleNotifications.removeAt(i);
+                                      });
+                                    },
                                   ),
-                                  label: null,
                                 ),
-                                RaisedButton(
-                                  splashColor: Theme.of(context).primaryColor,
-                                  highlightColor:
-                                      Theme.of(context).primaryColor,
-                                  color: Colors.yellow,
-                                  onPressed: () {
-                                    _buttonPressed(i);
-                                  },
-                                  child: Text(
-                                    'Set time',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
+                                Flexible(
+                                  flex: 1,
+                                  child: RaisedButton(
+                                    splashColor: Theme.of(context).primaryColor,
+                                    highlightColor:
+                                        Theme.of(context).primaryColor,
+                                    color: Colors.green,
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      _buttonPressed(i);
+                                    },
+                                    child: Text(
+                                      'Set time',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
