@@ -8,29 +8,24 @@ import 'package:alarm/notifications/notifications.dart';
 import 'package:alarm/screens/alarms/alarm_alert.dart';
 import 'package:flutter/rendering.dart';
 
-// ignore: must_be_immutable
 class AlarmList extends StatefulWidget {
   @override
   AlarmListState createState() => AlarmListState();
 }
 
 class AlarmListState extends State<AlarmList> {
-  List simpleNotifications = List();
+  List<SimpleNotification> simpleNotifications = List();
 
   TimeOfDay selectedTime;
   TimeOfDay _timeOfDay = TimeOfDay.now();
-  bool canRoute = false;
 
   void _buttonPressed(i) {
-    _timeSet(context).then((value) {
-      setState(() {
-        canRoute = true;
-      });
-      simpleNotifications[i].notify(_timeOfDay, i);
+    _setTime(context).then((value) {
+      simpleNotifications[i].notify(_timeOfDay);
     });
   }
 
-  Future _timeSet(BuildContext context) async {
+  Future _setTime(BuildContext context) async {
     await showTimePicker(context: context, initialTime: TimeOfDay.now())
         .then((value) {
       setState(() {
@@ -41,9 +36,8 @@ class AlarmListState extends State<AlarmList> {
   // Notification handling
 
   Future<dynamic> _onAndroidSelectNotification(String payload) async {
-    if (canRoute)
-      await Navigator.of(context).push(
-          new MaterialPageRoute(builder: (context) => new AlarmAlertScreen()));
+    await Navigator.of(context).push(
+        new MaterialPageRoute(builder: (context) => new AlarmAlertScreen()));
   }
 
   Future _onIOSSelectNotification(
@@ -73,189 +67,151 @@ class AlarmListState extends State<AlarmList> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var listView = Container(
-      child: ListView.builder(
-        itemCount: simpleNotifications.length,
-        itemBuilder: (context, i) {
-          return Card(
-              elevation: 2,
-              margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-              child: Container(
-                decoration: BoxDecoration(color: Colors.yellow.shade300),
-                child: Column(children: <Widget>[
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    leading: Container(
-                      child: Icon(
-                        Icons.alarm,
-                        color: Colors.black,
-                      ),
-                      padding: EdgeInsets.only(right: 12),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              right:
-                                  BorderSide(width: 1, color: Colors.black))),
-                    ),
-                    title: Text(
-                      simpleNotifications[i]
-                          .dateTime
-                          .toString()
-                          .substring(10, 15),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    trailing:
-                        Icon(Icons.keyboard_arrow_down, color: Colors.black),
-                    onTap: () {
-                      setState(() {
-                        (simpleNotifications[i].cardHeight == 0.0)
-                            ? simpleNotifications[i].cardHeight = 180.0
-                            : simpleNotifications[i].cardHeight = 0.0;
-                      });
-                    },
-                  ),
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.fastOutSlowIn,
-                    height: simpleNotifications[i].cardHeight,
-                    child: Card(
-                      child: Column(
-                        children: <Widget>[
-                          Flexible(
-                            flex: 2,
-                            child: Text(
-                              'Set only one day',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 5,
-                            child: DaySelector(
-                              onChange: (value) {
-                                if (DaySelector.monday & value ==
-                                    DaySelector.monday) {
-                                  simpleNotifications[i].daySel[0] = true;
-                                }
-                                if (DaySelector.monday & value == 0) {
-                                  simpleNotifications[i].daySel[0] = false;
-                                }
-
-                                if (DaySelector.tuesday & value ==
-                                    DaySelector.tuesday) {
-                                  simpleNotifications[i].daySel[1] = true;
-                                }
-                                if (DaySelector.tuesday & value == 0) {
-                                  simpleNotifications[i].daySel[1] = false;
-                                }
-
-                                if (DaySelector.wednesday & value ==
-                                    DaySelector.wednesday) {
-                                  simpleNotifications[i].daySel[2] = true;
-                                }
-                                if (DaySelector.wednesday & value == 0) {
-                                  simpleNotifications[i].daySel[2] = false;
-                                }
-
-                                if (DaySelector.thursday & value ==
-                                    DaySelector.thursday) {
-                                  simpleNotifications[i].daySel[3] = true;
-                                }
-                                if (DaySelector.thursday & value == 0) {
-                                  simpleNotifications[i].daySel[3] = false;
-                                }
-
-                                if (DaySelector.friday & value ==
-                                    DaySelector.friday) {
-                                  simpleNotifications[i].daySel[4] = true;
-                                }
-                                if (DaySelector.friday & value == 0) {
-                                  simpleNotifications[i].daySel[4] = false;
-                                }
-
-                                if (DaySelector.saturday & value ==
-                                    DaySelector.saturday) {
-                                  simpleNotifications[i].daySel[5] = true;
-                                }
-                                if (DaySelector.saturday & value == 0) {
-                                  simpleNotifications[i].daySel[5] = false;
-                                }
-
-                                if (DaySelector.sunday & value ==
-                                    DaySelector.sunday) {
-                                  simpleNotifications[i].daySel[6] = true;
-                                }
-                                if (DaySelector.sunday & value == 0) {
-                                  simpleNotifications[i].daySel[6] = false;
-                                }
-                              },
-                              mode: DaySelector.modeFull,
-                            ),
-                          ),
-                          Flexible(
-                            flex: 3,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              verticalDirection: VerticalDirection.down,
-                              children: <Widget>[
-                                Flexible(
-                                  flex: 1,
-                                  child: RaisedButton(
-                                    color: Colors.red,
-                                    textColor: Colors.white,
-                                    child: Text('delete',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        )),
-                                    onPressed: () {
-                                      setState(() {
-                                        simpleNotifications[i].cancel(i);
-                                        simpleNotifications.removeAt(i);
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: RaisedButton(
-                                    splashColor: Theme.of(context).primaryColor,
-                                    highlightColor:
-                                        Theme.of(context).primaryColor,
-                                    color: Colors.green,
-                                    textColor: Colors.white,
-                                    onPressed: () {
-                                      _buttonPressed(i);
-                                    },
-                                    child: Text(
-                                      'Set time',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ]),
-              ));
-        },
+  Widget _buildAlarmHeader(SimpleNotification oneNotify) {
+    return Container(
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+        leading: Container(
+          child: Icon(
+            Icons.alarm,
+            color: Colors.black,
+          ),
+          padding: EdgeInsets.only(right: 12),
+          decoration: BoxDecoration(
+              border: Border(
+                  right: BorderSide(
+                      width: 1, color: Colors.black))),
+        ),
+        title: Text(
+          oneNotify.dateTime.toString().substring(10, 15),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
       ),
     );
-    var button = FloatingActionButton(
+  }
+
+  Widget _buildAlarmBody(SimpleNotification oneNotify) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Set only one day',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          DaySelector(
+            onChange: (value) {
+              if (DaySelector.monday & value ==
+                  DaySelector.monday) {
+                oneNotify.daySel[0] = true;
+              }
+              if (DaySelector.monday & value == 0) {
+                oneNotify.daySel[0] = false;
+              }
+
+              if (DaySelector.tuesday & value ==
+                  DaySelector.tuesday) {
+                oneNotify.daySel[1] = true;
+              }
+              if (DaySelector.tuesday & value == 0) {
+                oneNotify.daySel[1] = false;
+              }
+
+              if (DaySelector.wednesday & value ==
+                  DaySelector.wednesday) {
+                oneNotify.daySel[2] = true;
+              }
+              if (DaySelector.wednesday & value == 0) {
+                oneNotify.daySel[2] = false;
+              }
+
+              if (DaySelector.thursday & value ==
+                  DaySelector.thursday) {
+                oneNotify.daySel[3] = true;
+              }
+              if (DaySelector.thursday & value == 0) {
+                oneNotify.daySel[3] = false;
+              }
+
+              if (DaySelector.friday & value ==
+                  DaySelector.friday) {
+                oneNotify.daySel[4] = true;
+              }
+              if (DaySelector.friday & value == 0) {
+                oneNotify.daySel[4] = false;
+              }
+
+              if (DaySelector.saturday & value ==
+                  DaySelector.saturday) {
+                oneNotify.daySel[5] = true;
+              }
+              if (DaySelector.saturday & value == 0) {
+                oneNotify.daySel[5] = false;
+              }
+
+              if (DaySelector.sunday & value ==
+                  DaySelector.sunday) {
+                oneNotify.daySel[6] = true;
+              }
+              if (DaySelector.sunday & value == 0) {
+                oneNotify.daySel[6] = false;
+              }
+            },
+            mode: DaySelector.modeFull,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            verticalDirection: VerticalDirection.down,
+            children: <Widget>[
+              RaisedButton(
+                color: Colors.red,
+                child: CircleAvatar(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+                onPressed: () {
+                  setState(() {
+                    oneNotify.cancel();
+                    simpleNotifications
+                        .removeAt(oneNotify.index);
+                  });
+                },
+              ),
+              RaisedButton(
+                splashColor: Theme.of(context).primaryColor,
+                highlightColor: Theme.of(context).primaryColor,
+                color: Colors.green,
+                textColor: Colors.white,
+                onPressed: () {
+                  _buttonPressed(oneNotify.index);
+                },
+                child: Text(
+                  'Set time',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var addNewAlarmBtn = FloatingActionButton(
         heroTag: 'plusTag',
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
@@ -263,9 +219,10 @@ class AlarmListState extends State<AlarmList> {
         child: Icon(Icons.add),
         onPressed: () {
           setState(() {
-            canRoute = false;
             simpleNotifications.add(new SimpleNotification(
-                _onAndroidSelectNotification, _onIOSSelectNotification));
+                _onAndroidSelectNotification,
+                _onIOSSelectNotification,
+                simpleNotifications.length));
           });
           _buttonPressed(simpleNotifications.length - 1);
         });
@@ -278,13 +235,38 @@ class AlarmListState extends State<AlarmList> {
           padding: EdgeInsets.only(right: 5),
         ),
       ),
-      body: listView,
-      floatingActionButton: button,
+      body: _alarmListView(),
+      floatingActionButton: addNewAlarmBtn,
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Widget _alarmListView() {
+    return Container(
+      color: Colors.yellow.withOpacity(0.2),
+      child: Theme(
+        data: Theme.of(context)
+            .copyWith(cardColor: Colors.yellow.withOpacity(0.6)),
+        child: ListView(
+          children: <Widget>[
+            ExpansionPanelList(
+              expansionCallback: (int i, bool isExpanded) => setState(() {
+                  simpleNotifications[i].isExpanded = !isExpanded;
+                }),
+              children: simpleNotifications
+                  .map<ExpansionPanel>((SimpleNotification oneNotify) =>
+                    ExpansionPanel(
+                      headerBuilder: (BuildContext context, bool isExpanded) => _buildAlarmHeader(oneNotify),
+                      body: _buildAlarmBody(oneNotify),
+                      isExpanded: oneNotify.isExpanded)).toList(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
