@@ -15,9 +15,8 @@ class SimpleNotification {
     false,
     false,
   ];
-  var cardHeight = 0.0;
 
-  bool _isFirstTime = true;
+  //bool _isFirstTime = true;
   bool isExpanded;
 
   int index;
@@ -62,7 +61,7 @@ class SimpleNotification {
 
   void notify(TimeOfDay time) {
     //cancel();
-    // _dateTime = time;
+    _dateTime = time;
     // print(
     //     'Day selected ${daySel[0]} ${daySel[1]} ${daySel[2]} ${daySel[3]} ${daySel[4]} ${daySel[5]} ${daySel[6]} /n $time');
     // if (_isFirstTime) {
@@ -78,15 +77,16 @@ class SimpleNotification {
     //   print(
     //       'Day selected ${daySel[0]} ${daySel[1]} ${daySel[2]} ${daySel[3]} ${daySel[4]} ${daySel[5]} ${daySel[6]} /n $time');
     //   print('hours: ${time.hour}, minutes: ${time.minute}');
-    TimeOfDay dayTimeTest = TimeOfDay(
-        hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute + 2);
+    print('hour: ${time.hour}, minute: ${time.minute}');
+    print('hour: ${_dateTime.hour}, minute: ${_dateTime.minute}');
     _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
         //index,
-        0,
+        7 * index,
         "Time is over",
         "It's adventure time",
-        Day(DateTime.now().weekday),
-        Time(dayTimeTest.hour, dayTimeTest.minute),
+        //Day(DateTime.now().weekday),
+        Day.Sunday,
+        Time(13, 41),
         //Time(time.hour, time.minute),
         _notificationDetails);
 

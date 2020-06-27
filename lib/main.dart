@@ -1,4 +1,5 @@
 // LIBRARIES
+import 'package:alarm/screens/alarms/alarm_alert.dart';
 import 'package:flutter/material.dart';
 // COMPONENTS
 import 'screens/alarms/alarm_list.dart';
@@ -6,17 +7,15 @@ import 'screens/alarms/alarm_list.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Alarm',
-        theme: ThemeData(
+      title: 'Alarm',
+      theme: ThemeData(
           primarySwatch: Colors.yellow,
-          textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white))
-        ),
+          textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white))),
       home: AlarmList(),
-    );  }
-
+      routes: {'/screenAlert': (BuildContext context) => AlarmAlertScreen()},
+    );
+  }
 }
-
