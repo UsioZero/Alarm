@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:alarm/notifications/notifications.dart';
 
 StatelessWidget addNewAlarmBtn(
     List simpleNotifications,
-    Future _onAndroidSelectNotification,
-    Future _onIOSSelectNotification,
-    _buttonPressed(int i),
-    setChange(void a)) {
+    _onAndroidSelectNotification,
+    _onIOSSelectNotification,
+    setTimeShowNotification(int i),
+    addNewNotification()) {
   return FloatingActionButton(
       heroTag: 'plusTag',
       backgroundColor: Colors.blueGrey,
@@ -16,12 +14,7 @@ StatelessWidget addNewAlarmBtn(
       //shape: ShapeBorder,
       child: Icon(Icons.add),
       onPressed: () {
-        setChange(() {
-          simpleNotifications.add(new SimpleNotification(
-              _onAndroidSelectNotification,
-              _onIOSSelectNotification,
-              simpleNotifications.length));
-        });
-        _buttonPressed(simpleNotifications.length - 1);
+        addNewNotification();
+        setTimeShowNotification(simpleNotifications.length - 1);
       });
 }

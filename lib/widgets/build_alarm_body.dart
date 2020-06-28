@@ -21,52 +21,52 @@ Widget buildAlarmBody(
         DaySelector(
           onChange: (value) {
             if (DaySelector.monday & value == DaySelector.monday) {
-              oneNotify.daySel[0] = true;
+              oneNotify.daySel['monday'] = true;
             }
             if (DaySelector.monday & value == 0) {
-              oneNotify.daySel[0] = false;
+              oneNotify.daySel['monday'] = false;
             }
 
             if (DaySelector.tuesday & value == DaySelector.tuesday) {
-              oneNotify.daySel[1] = true;
+              oneNotify.daySel['tuesday'] = true;
             }
             if (DaySelector.tuesday & value == 0) {
-              oneNotify.daySel[1] = false;
+              oneNotify.daySel['tuesday'] = false;
             }
 
             if (DaySelector.wednesday & value == DaySelector.wednesday) {
-              oneNotify.daySel[2] = true;
+              oneNotify.daySel['wednesday'] = true;
             }
             if (DaySelector.wednesday & value == 0) {
-              oneNotify.daySel[2] = false;
+              oneNotify.daySel['wednesday'] = false;
             }
 
             if (DaySelector.thursday & value == DaySelector.thursday) {
-              oneNotify.daySel[3] = true;
+              oneNotify.daySel['thurseday'] = true;
             }
             if (DaySelector.thursday & value == 0) {
-              oneNotify.daySel[3] = false;
+              oneNotify.daySel['thurseday'] = false;
             }
 
             if (DaySelector.friday & value == DaySelector.friday) {
-              oneNotify.daySel[4] = true;
+              oneNotify.daySel['friday'] = true;
             }
             if (DaySelector.friday & value == 0) {
-              oneNotify.daySel[4] = false;
+              oneNotify.daySel['friday'] = false;
             }
 
             if (DaySelector.saturday & value == DaySelector.saturday) {
-              oneNotify.daySel[5] = true;
+              oneNotify.daySel['saturday'] = true;
             }
             if (DaySelector.saturday & value == 0) {
-              oneNotify.daySel[5] = false;
+              oneNotify.daySel['saturday'] = false;
             }
 
             if (DaySelector.sunday & value == DaySelector.sunday) {
-              oneNotify.daySel[6] = true;
+              oneNotify.daySel['sunday'] = true;
             }
             if (DaySelector.sunday & value == 0) {
-              oneNotify.daySel[6] = false;
+              oneNotify.daySel['sunday'] = false;
             }
           },
           mode: DaySelector.modeFull,

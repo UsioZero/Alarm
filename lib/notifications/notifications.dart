@@ -6,18 +6,18 @@ class SimpleNotification {
   TimeOfDay _dateTime = TimeOfDay.now();
   get dateTime => _dateTime;
 
-  List<bool> daySel = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
+  Map<String, bool> daySel = {
+    'monday': false,
+    'tuesday': false,
+    'wednesday': false,
+    'thurseday': false,
+    'friday': false,
+    'saturday': false,
+    'sunday': false,
+  };
 
-  //bool _isFirstTime = true;
-  bool isExpanded;
+  bool _isFirstTime = true;
+  bool isExpanded = false;
 
   int index;
 
@@ -60,98 +60,82 @@ class SimpleNotification {
   }
 
   void notify(TimeOfDay time) {
-    //cancel();
+    cancel();
     _dateTime = time;
-    // print(
-    //     'Day selected ${daySel[0]} ${daySel[1]} ${daySel[2]} ${daySel[3]} ${daySel[4]} ${daySel[5]} ${daySel[6]} /n $time');
-    // if (_isFirstTime) {
-    //   _isFirstTime = false;
-    //   _flutterLocalNotificationsPlugin.schedule(
-    //       7 * index,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       DateTime(DateTime.now().year, DateTime.now().month,
-    //           DateTime.now().day, time.hour, time.minute),
-    //       _notificationDetails);
-    // } else {
-    //   print(
-    //       'Day selected ${daySel[0]} ${daySel[1]} ${daySel[2]} ${daySel[3]} ${daySel[4]} ${daySel[5]} ${daySel[6]} /n $time');
-    //   print('hours: ${time.hour}, minutes: ${time.minute}');
-    print('hour: ${time.hour}, minute: ${time.minute}');
-    print('hour: ${_dateTime.hour}, minute: ${_dateTime.minute}');
-    _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-        //index,
-        7 * index,
-        "Time is over",
-        "It's adventure time",
-        //Day(DateTime.now().weekday),
-        Day.Sunday,
-        Time(13, 41),
-        //Time(time.hour, time.minute),
-        _notificationDetails);
+    print(
+        'Day selected ${daySel['monday']} ${daySel['tuesday']} ${daySel['wednesday']} ${daySel['thurseday']} ${daySel['friday']} ${daySel['saturday']} ${daySel['sunday']} \ntime: $time\nindex: $index');
+    if (_isFirstTime) {
+      _isFirstTime = false;
+      _flutterLocalNotificationsPlugin.schedule(
+          7 * index,
+          "Time is over",
+          "It's adventure time",
+          DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day, time.hour, time.minute),
+          _notificationDetails);
+    } else {
+      if (daySel['monday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index,
+            "Time is over",
+            "It's adventure time",
+            Day.Monday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
 
-    // if (daySel[0])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(1),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
+      if (daySel['tuesday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index + 1,
+            "Time is over",
+            "It's adventure time",
+            Day.Tuesday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
 
-    // if (daySel[1])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index + 1,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(2),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
+      if (daySel['wednesday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index + 2,
+            "Time is over",
+            "It's adventure time",
+            Day.Wednesday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
 
-    // if (daySel[2])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index + 2,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(3),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
+      if (daySel['thurseday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index + 3,
+            "Time is over",
+            "It's adventure time",
+            Day.Thursday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
 
-    // if (daySel[3])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index + 3,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(4),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
+      if (daySel['friday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index + 4,
+            "Time is over",
+            "It's adventure time",
+            Day.Friday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
 
-    // if (daySel[4])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index + 4,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(5),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
+      if (daySel['saturday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index + 5,
+            "Time is over",
+            "It's adventure time",
+            Day.Saturday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
 
-    // if (daySel[5])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index + 5,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(6),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
-
-    // if (daySel[6])
-    //   _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //       7 * index + 6,
-    //       "Time is over",
-    //       "It's adventure time",
-    //       Day(7),
-    //       Time(time.hour, time.minute),
-    //       _notificationDetails);
-    // }
+      if (daySel['sunday'])
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+            7 * index + 6,
+            "Time is over",
+            "It's adventure time",
+            Day.Sunday,
+            Time(time.hour, time.minute),
+            _notificationDetails);
+    }
   }
 }

@@ -8,7 +8,8 @@ Widget alarmListView(
     List<SimpleNotification> simpleNotifications,
     setTimeShowNotification(int i),
     onDeleteBtnPressed(SimpleNotification notification),
-    expansionCallback(int i, bool isExpanded)) {
+    expansionCallback(int i, bool isExpanded),
+    onHeaderTap(SimpleNotification oneNotify)) {
   return Container(
     color: Colors.yellow.withOpacity(0.5),
     child: Theme(
@@ -24,7 +25,7 @@ Widget alarmListView(
                     ExpansionPanel(
                         headerBuilder:
                             (BuildContext context, bool isExpanded) =>
-                                buildAlarmHeader(oneNotify),
+                                buildAlarmHeader(oneNotify, onHeaderTap),
                         body: buildAlarmBody(
                             oneNotify,
                             context,

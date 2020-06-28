@@ -16,9 +16,12 @@ class AlarmList extends StatefulWidget {
 class AlarmListState extends State<AlarmList> {
   List<SimpleNotification> simpleNotifications = List();
 
+  bool canRoute = false;
+
   // Notification handling
   Future<dynamic> _onAndroidSelectNotification(String payload) async {
-    await Navigator.of(context).pushNamed('/screenAlert');
+    print('try route to Alert screen');
+    if (canRoute) await Navigator.of(context).pushNamed('/screenAlert');
   }
 
   Future _onIOSSelectNotification(
@@ -50,24 +53,6 @@ class AlarmListState extends State<AlarmList> {
 
   @override
   Widget build(BuildContext context) {
-    Widget addNewAlarmBtn() {
-      return FloatingActionButton(
-          heroTag: 'plusTag',
-          backgroundColor: Colors.blueGrey,
-          foregroundColor: Colors.white,
-          //shape: ShapeBorder,
-          child: Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              simpleNotifications.add(new SimpleNotification(
-                  _onAndroidSelectNotification,
-                  _onIOSSelectNotification,
-                  simpleNotifications.length));
-            });
-            setTimeShowNotification(simpleNotifications.length - 1);
-          });
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Alarm'),
@@ -77,8 +62,13 @@ class AlarmListState extends State<AlarmList> {
         ),
       ),
       body: alarmListView(context, simpleNotifications, setTimeShowNotification,
-          onDeleteBtnPressed, expansionCallback),
-      floatingActionButton: addNewAlarmBtn(),
+          onDeleteBtnPressed, expansionCallback, onHeaderTap),
+      floatingActionButton: addNewAlarmBtn(
+          simpleNotifications,
+          _onAndroidSelectNotification,
+          _onIOSSelectNotification,
+          setTimeShowNotification,
+          addNewNotification),
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),
@@ -100,16 +90,27 @@ class AlarmListState extends State<AlarmList> {
     });
   }
 
-  // void setTimeShowNotification(i) {
-  //   setTime().then((value) {
-  //     simpleNotifications[i].notify(_timeOfDay);
-  //   });
-  // }
+  void addNewNotification() {
+    setState(() {
+      simpleNotifications.add(new SimpleNotification(
+          _onAndroidSelectNotification,
+          _onIOSSelectNotification,
+          simpleNotifications.length));
+    });
+  }
+
+  void onHeaderTap(SimpleNotification oneNotify) {
+    setState(() {
+      oneNotify.isExpanded = !oneNotify.isExpanded;
+    });
+  }
 
   Future setTimeShowNotification(i) async {
+    canRoute = false;
     await showTimePicker(context: context, initialTime: TimeOfDay.now())
         .then((value) {
       setState(() {
+        canRoute = true;
         simpleNotifications[i]
             .notify((value != null) ? value : TimeOfDay.now());
       });
