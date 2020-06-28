@@ -1,4 +1,4 @@
-import 'package:alarm/notifications/notifications.dart';
+import 'package:alarm/notifications/simple_notification.dart';
 import 'package:flutter/material.dart';
 import 'build_alarm_body.dart';
 import 'build_alarm_header.dart';

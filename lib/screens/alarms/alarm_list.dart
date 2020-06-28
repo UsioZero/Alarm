@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 // COMPONENTS
-import 'package:alarm/notifications/notifications.dart';
+import 'package:alarm/notifications/simple_notification.dart';
 import 'package:alarm/screens/alarms/alarm_alert.dart';
 import 'package:flutter/rendering.dart';
 import 'package:alarm/widgets/widgets_lib.dart';
@@ -16,18 +16,15 @@ class AlarmList extends StatefulWidget {
 class AlarmListState extends State<AlarmList> {
   List<SimpleNotification> simpleNotifications = List();
 
-  bool canRoute = false;
-
   // Notification handling
-  Future<dynamic> _onAndroidSelectNotification(String payload) async {
-    print('try route to Alert screen');
-    if (canRoute) await Navigator.of(context).pushNamed('/screenAlert');
+  Future _onAndroidSelectNotification(String payload) {
+    print('On android push named');
+    return Navigator.of(context).pushNamed('/alert');
   }
 
   Future _onIOSSelectNotification(
-      int id, String title, String body, String payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-    showDialog(
+      int id, String title, String body, String payload) {
+    return showDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: Text(title),
@@ -36,14 +33,10 @@ class AlarmListState extends State<AlarmList> {
           CupertinoDialogAction(
             isDefaultAction: true,
             child: Text('Ok'),
-            onPressed: () async {
+            onPressed: () {
+              print('On IOS select button pressed.');
               Navigator.of(context, rootNavigator: true).pop();
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AlarmAlertScreen(),
-                ),
-              );
+              return Navigator.of(context).pushNamed('/alert');
             },
           )
         ],
@@ -106,11 +99,9 @@ class AlarmListState extends State<AlarmList> {
   }
 
   Future setTimeShowNotification(i) async {
-    canRoute = false;
     await showTimePicker(context: context, initialTime: TimeOfDay.now())
         .then((value) {
       setState(() {
-        canRoute = true;
         simpleNotifications[i]
             .notify((value != null) ? value : TimeOfDay.now());
       });

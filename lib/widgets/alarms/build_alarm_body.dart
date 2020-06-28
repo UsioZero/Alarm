@@ -1,4 +1,4 @@
-import 'package:alarm/notifications/notifications.dart';
+import 'package:alarm/notifications/simple_notification.dart';
 import 'package:day_selector/day_selector.dart';
 import 'package:flutter/material.dart';
 

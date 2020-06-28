@@ -1,4 +1,4 @@
-import 'package:alarm/notifications/notifications.dart';
+import 'package:alarm/notifications/simple_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

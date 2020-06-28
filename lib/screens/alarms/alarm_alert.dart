@@ -12,6 +12,7 @@ class AlarmAlertScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Text('Back'),
               onPressed: () {
+                print('Alert back pressed');
                 Navigator.of(context).pop();
               },
             ),

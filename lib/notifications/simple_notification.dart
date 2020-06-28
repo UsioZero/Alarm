@@ -10,7 +10,7 @@ class SimpleNotification {
     'monday': false,
     'tuesday': false,
     'wednesday': false,
-    'thurseday': false,
+    'thursday': false,
     'friday': false,
     'saturday': false,
     'sunday': false,
