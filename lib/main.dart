@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 // COMPONENTS
 import 'screens/alarms/alarm_list.dart';
 
-void main() => runApp(Alarm());
+void main() => runApp(AlarmApp());
 
-class Alarm extends StatelessWidget {
+class AlarmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

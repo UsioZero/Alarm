@@ -1,13 +1,11 @@
 // LIBRARIES
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
 
-// COMPONENTS
-import 'package:alarm/notifications/simple_notification.dart';
-import 'package:alarm/screens/alarms/alarm_alert.dart';
+import 'package:alarm/models/lib.dart';
+import 'package:alarm/widgets/lib.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:alarm/widgets/widgets_lib.dart';
 
 class AlarmList extends StatefulWidget {
   @override
@@ -15,7 +13,33 @@ class AlarmList extends StatefulWidget {
 }
 
 class AlarmListState extends State<AlarmList> {
-  List<SimpleNotification> simpleNotifications = List();
+  List<Alarm> _alarms = List();
+
+  // HANDLERS
+
+  void _onAddNewAlarm() {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((selectedTime) {
+      if (selectedTime != null) {
+        int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+        Alarm newAlarm = Alarm(currentTimestamp, selectedTime, []);
+
+        setState(() {
+          _alarms.add(newAlarm);
+        });
+      }
+    })
+        .catchError((error) {
+      print(error);
+    });
+  }
+
+  void _onAlarmExpanded(int alarmId, bool isExpanded) {
+    setState(() {
+      var updatedAlarm = _alarms.singleWhere((alarm) => alarm.id == alarmId);
+      updatedAlarm.isExpanded = !isExpanded;
+    });
+  }
 
   // Notification handling
   Future _onAndroidSelectNotification(String payload) {
@@ -55,60 +79,20 @@ class AlarmListState extends State<AlarmList> {
           padding: EdgeInsets.only(right: 5),
         ),
       ),
-      body: alarmListView(context, simpleNotifications, setTimeShowNotification,
-          onDeleteBtnPressed, expansionCallback, onHeaderTap),
+      body: AlarmsListView(_alarms, _onAlarmExpanded),
       floatingActionButton: FloatingActionButton(
           heroTag: 'plusTag',
           backgroundColor: Colors.blueGrey,
           foregroundColor: Colors.white,
           //shape: ShapeBorder,
           child: Icon(Icons.add),
-          onPressed: () {
-            setTimeShowNotification(simpleNotifications.length - 1);
-          }),
+          onPressed: _onAddNewAlarm
+      ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
-
-  void onDeleteBtnPressed(notification) {
-    setState(() {
-      notification.cancel();
-      simpleNotifications.removeAt(notification.index);
-    });
-  }
-
-  void expansionCallback(int i, bool isExpanded) {
-    setState(() {
-      simpleNotifications[i].isExpanded = !isExpanded;
-    });
-  }
-
-  void addNewNotification() {
-    setState(() {
-      simpleNotifications.add(new SimpleNotification(
-          _onAndroidSelectNotification,
-          _onIOSSelectNotification,
-          simpleNotifications.length));
-    });
-  }
-
-  void onHeaderTap(SimpleNotification oneNotify) {
-    setState(() {
-      oneNotify.isExpanded = !oneNotify.isExpanded;
-    });
-  }
-
-  Future setTimeShowNotification(i) {
-    return showTimePicker(context: context, initialTime: TimeOfDay.now())
-        .then((value) {
-      if (value != null) {
-        addNewNotification();
-        simpleNotifications[i].notify(value);
-      }
-    });
   }
 }
