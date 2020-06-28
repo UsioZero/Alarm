@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
 // COMPONENTS
 import 'package:alarm/notifications/simple_notification.dart';
 import 'package:alarm/screens/alarms/alarm_alert.dart';
@@ -56,12 +57,15 @@ class AlarmListState extends State<AlarmList> {
       ),
       body: alarmListView(context, simpleNotifications, setTimeShowNotification,
           onDeleteBtnPressed, expansionCallback, onHeaderTap),
-      floatingActionButton: addNewAlarmBtn(
-          simpleNotifications,
-          _onAndroidSelectNotification,
-          _onIOSSelectNotification,
-          setTimeShowNotification,
-          addNewNotification),
+      floatingActionButton: FloatingActionButton(
+          heroTag: 'plusTag',
+          backgroundColor: Colors.blueGrey,
+          foregroundColor: Colors.white,
+          //shape: ShapeBorder,
+          child: Icon(Icons.add),
+          onPressed: () {
+            setTimeShowNotification(simpleNotifications.length - 1);
+          }),
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),
@@ -98,13 +102,13 @@ class AlarmListState extends State<AlarmList> {
     });
   }
 
-  Future setTimeShowNotification(i) async {
-    await showTimePicker(context: context, initialTime: TimeOfDay.now())
+  Future setTimeShowNotification(i) {
+    return showTimePicker(context: context, initialTime: TimeOfDay.now())
         .then((value) {
-      setState(() {
-        simpleNotifications[i]
-            .notify((value != null) ? value : TimeOfDay.now());
-      });
+      if (value != null) {
+        addNewNotification();
+        simpleNotifications[i].notify(value);
+      }
     });
   }
 }
