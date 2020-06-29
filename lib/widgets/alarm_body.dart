@@ -69,8 +69,6 @@ class AlarmBody extends StatelessWidget {
                   if (DaySelector.sunday & value == 0) {
                     _selectedDays[6] = false;
                   }
-                  print(
-                      'Selected days: ${_selectedDays[0]}, ${_selectedDays[1]}, ${_selectedDays[2]}, ${_selectedDays[3]}, ${_selectedDays[4]}, ${_selectedDays[5]}, ${_selectedDays[6]}');
                 },
                 mode: DaySelector.modeFull,
               )
@@ -104,9 +102,6 @@ class AlarmBody extends StatelessWidget {
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () {
-                      print('set time button pressed');
-                      print(
-                          'Selected days: ${_selectedDays[0]}, ${_selectedDays[1]}, ${_selectedDays[2]}, ${_selectedDays[3]}, ${_selectedDays[4]}, ${_selectedDays[5]}, ${_selectedDays[6]}');
                       _onSetTime(alarmId, _selectedDays);
                     },
                     child: Text(

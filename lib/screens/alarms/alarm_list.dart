@@ -59,6 +59,8 @@ class AlarmListState extends State<AlarmList> {
 
   void _onAlarmDelete(int alarmId) {
     setState(() {
+      var alarmDel = _alarms.singleWhere((alarm) => alarm.id == alarmId);
+      _notification.cancel(alarmDel.notificationId);
       _alarms.removeWhere((alarm) => alarm.id == alarmId);
     });
   }
