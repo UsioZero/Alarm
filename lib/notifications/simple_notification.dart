@@ -6,7 +6,6 @@ class SimpleNotification {
   TimeOfDay _dateTime = TimeOfDay.now();
   get dateTime => _dateTime;
 
-  bool _isFirstTime = true;
   bool isExpanded = false;
 
   static const AndroidNotificationDetails _androidDetails =
@@ -45,14 +44,14 @@ class SimpleNotification {
     _flutterLocalNotificationsPlugin.cancel(7 * notificationId + 6);
   }
 
-  void notify(TimeOfDay time, int notificationId, List<bool> daySel) {
+  void notify(
+      TimeOfDay time, int notificationId, List<bool> daySel, bool isFirstTime) {
     cancel(notificationId);
     _dateTime = time;
     print('notification:');
     print(
         'Day selected ${daySel[0]} ${daySel[1]} ${daySel[2]} ${daySel[3]} ${daySel[4]} ${daySel[5]} ${daySel[6]} \ntime: $time\nnotificationId: $notificationId');
-    if (_isFirstTime) {
-      _isFirstTime = false;
+    if (isFirstTime) {
       _flutterLocalNotificationsPlugin.schedule(
           7 * notificationId,
           "Time is over",
@@ -62,12 +61,19 @@ class SimpleNotification {
           _notificationDetails);
     } else {
       if (daySel[0])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+        // _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+        //     7 * notificationId,
+        //     "Time is over",
+        //     "It's adventure time",
+        //     Day.Monday,
+        //     Time(time.hour, time.minute),
+        //     _notificationDetails);
+        _flutterLocalNotificationsPlugin.schedule(
             7 * notificationId,
             "Time is over",
             "It's adventure time",
-            Day.Monday,
-            Time(time.hour, time.minute),
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day, time.hour, time.minute),
             _notificationDetails);
 
       if (daySel[1])

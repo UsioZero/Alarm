@@ -42,7 +42,7 @@ class AlarmListState extends State<AlarmList> {
         setState(() {
           _alarms.add(newAlarm);
           _notification.notify(_alarms.last.time, _alarms.last.notificationId,
-              _alarms.last.selectedDays);
+              _alarms.last.selectedDays, true);
         });
       }
     }).catchError((error) {
@@ -72,7 +72,8 @@ class AlarmListState extends State<AlarmList> {
         setState(() {
           var alarm = _alarms.singleWhere((alarm) => alarm.id == alarmId);
           alarm.time = selectedTime;
-          _notification.notify(alarm.time, alarm.notificationId, selectedDays);
+          _notification.notify(
+              alarm.time, alarm.notificationId, selectedDays, false);
         });
       }
     });
