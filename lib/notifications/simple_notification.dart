@@ -61,19 +61,12 @@ class SimpleNotification {
           _notificationDetails);
     } else {
       if (daySel[0])
-        // _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-        //     7 * notificationId,
-        //     "Time is over",
-        //     "It's adventure time",
-        //     Day.Monday,
-        //     Time(time.hour, time.minute),
-        //     _notificationDetails);
-        _flutterLocalNotificationsPlugin.schedule(
+        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId,
             "Time is over",
             "It's adventure time",
-            DateTime(DateTime.now().year, DateTime.now().month,
-                DateTime.now().day, time.hour, time.minute),
+            Day.Monday,
+            Time(time.hour, time.minute),
             _notificationDetails);
 
       if (daySel[1])
