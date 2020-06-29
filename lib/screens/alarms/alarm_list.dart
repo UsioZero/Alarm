@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:alarm/models/lib.dart';
+import 'package:alarm/notifications/simple_notification.dart';
 import 'package:alarm/widgets/lib.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,14 @@ class AlarmList extends StatefulWidget {
 
 class AlarmListState extends State<AlarmList> {
   List<Alarm> _alarms = List();
+  SimpleNotification _notification;
+
+  @override
+  void initState() {
+    _notification = new SimpleNotification(
+        _onAndroidSelectNotification, _onIOSSelectNotification);
+    super.initState();
+  }
 
   // HANDLERS
 
@@ -22,14 +31,21 @@ class AlarmListState extends State<AlarmList> {
         .then((selectedTime) {
       if (selectedTime != null) {
         int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-        Alarm newAlarm = Alarm(currentTimestamp, selectedTime, []);
-
+        int notifId;
+        if (_alarms.isEmpty) {
+          notifId = 0;
+        } else {
+          notifId = _alarms.last.notificationId + 1;
+        }
+        Alarm newAlarm = Alarm(currentTimestamp, notifId, selectedTime,
+            [false, false, false, false, false, false, false]);
         setState(() {
           _alarms.add(newAlarm);
+          _notification.notify(_alarms.last.time, _alarms.last.notificationId,
+              _alarms.last.selectedDays);
         });
       }
-    })
-        .catchError((error) {
+    }).catchError((error) {
       print(error);
     });
   }
@@ -38,6 +54,25 @@ class AlarmListState extends State<AlarmList> {
     setState(() {
       var updatedAlarm = _alarms.singleWhere((alarm) => alarm.id == alarmId);
       updatedAlarm.isExpanded = !isExpanded;
+    });
+  }
+
+  void _onAlarmDelete(int alarmId) {
+    setState(() {
+      _alarms.removeWhere((alarm) => alarm.id == alarmId);
+    });
+  }
+
+  void _onSetTime(int alarmId, List<bool> selectedDays) {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((selectedTime) {
+      if (selectedTime != null) {
+        setState(() {
+          var alarm = _alarms.singleWhere((alarm) => alarm.id == alarmId);
+          alarm.time = selectedTime;
+          _notification.notify(alarm.time, alarm.notificationId, selectedDays);
+        });
+      }
     });
   }
 
@@ -79,15 +114,17 @@ class AlarmListState extends State<AlarmList> {
           padding: EdgeInsets.only(right: 5),
         ),
       ),
-      body: AlarmsListView(_alarms, _onAlarmExpanded),
+      body:
+          AlarmsListView(_alarms, _onAlarmExpanded, _onAlarmDelete, _onSetTime),
       floatingActionButton: FloatingActionButton(
           heroTag: 'plusTag',
           backgroundColor: Colors.blueGrey,
           foregroundColor: Colors.white,
           //shape: ShapeBorder,
           child: Icon(Icons.add),
-          onPressed: _onAddNewAlarm
-      ),
+          onPressed: () {
+            _onAddNewAlarm();
+          }),
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),

@@ -13,7 +13,9 @@ class AlarmAlertScreen extends StatelessWidget {
               child: Text('Back'),
               onPressed: () {
                 print('Alert back pressed');
-                Navigator.of(context).pop();
+                Future.delayed(Duration.zero, () {
+                  Navigator.of(context).pop();
+                });
               },
             ),
           ),
