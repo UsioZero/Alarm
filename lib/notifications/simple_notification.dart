@@ -1,4 +1,5 @@
 //LIBRARIES
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -7,6 +8,7 @@ class SimpleNotification {
   get dateTime => _dateTime;
 
   bool isExpanded = false;
+  BuildContext context;
 
   static const AndroidNotificationDetails _androidDetails =
       AndroidNotificationDetails(
@@ -21,17 +23,17 @@ class SimpleNotification {
 
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  SimpleNotification(androidCallback, iosCallback) {
+  SimpleNotification(this.context) {
     this._dateTime = _dateTime;
     var initSetAndroid = new AndroidInitializationSettings('hourglasses');
     var initSetIos = new IOSInitializationSettings(
-        onDidReceiveLocalNotification: iosCallback);
+        onDidReceiveLocalNotification: _onIOSSelectNotification);
     var initSet = new InitializationSettings(initSetAndroid, initSetIos);
 
     _flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 
     _flutterLocalNotificationsPlugin.initialize(initSet,
-        onSelectNotification: androidCallback);
+        onSelectNotification: _onAndroidSelectNotification);
   }
 
   void cancel(int notificationId) {
@@ -120,5 +122,30 @@ class SimpleNotification {
             Time(time.hour, time.minute),
             _notificationDetails);
     }
+  }
+
+  Future _onAndroidSelectNotification(String payload) {
+    return Navigator.of(context).pushNamed('/alert');
+  }
+
+  Future _onIOSSelectNotification(
+      int id, String title, String body, String payload) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(body),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              return Navigator.of(context).pushNamed('/alert');
+            },
+          )
+        ],
+      ),
+    );
   }
 }

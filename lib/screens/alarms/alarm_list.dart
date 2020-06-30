@@ -1,5 +1,4 @@
 // LIBRARIES
-import 'dart:async';
 
 import 'package:alarm/models/lib.dart';
 import 'package:alarm/notifications/simple_notification.dart';
@@ -19,8 +18,7 @@ class AlarmListState extends State<AlarmList> {
 
   @override
   void initState() {
-    _notification = new SimpleNotification(
-        _onAndroidSelectNotification, _onIOSSelectNotification);
+    _notification = new SimpleNotification(context);
     super.initState();
   }
 
@@ -80,32 +78,6 @@ class AlarmListState extends State<AlarmList> {
         });
       }
     });
-  }
-
-  // Notification handling
-  Future _onAndroidSelectNotification(String payload) {
-    return Navigator.of(context).pushNamed('/alert');
-  }
-
-  Future _onIOSSelectNotification(
-      int id, String title, String body, String payload) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(body),
-        actions: [
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: Text('Ok'),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              return Navigator.of(context).pushNamed('/alert');
-            },
-          )
-        ],
-      ),
-    );
   }
 
   @override
