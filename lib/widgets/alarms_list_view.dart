@@ -6,7 +6,7 @@ class AlarmsListView extends StatelessWidget {
   final List<Alarm> _alarms;
   final Function(int, bool) _onAlarmExpand;
   final Function(int) _onDeleteAlarm;
-  final Function(int) _onSetTimeAlarm;
+  final Function(int, List<bool>) _onSetTimeAlarm;
 
   AlarmsListView(this._alarms, this._onAlarmExpand, this._onDeleteAlarm,
       this._onSetTimeAlarm);

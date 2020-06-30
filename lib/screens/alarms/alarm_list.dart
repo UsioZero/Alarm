@@ -47,7 +47,7 @@ class AlarmListState extends State<AlarmList> {
     });
   }
 
-  void _onSetTimeAlarm(int alarmId) {
+  void _onSetTimeAlarm(int alarmId, List<bool> daySelected) {
     showTimePicker(context: context, initialTime: TimeOfDay.now())
         .then((value) {
       if (value != null) {

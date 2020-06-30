@@ -5,7 +5,7 @@ class AlarmBody extends StatelessWidget {
   final List<bool> _selectedDays;
   final int alarmId;
   final Function(int) _onDeleteAlarm;
-  final Function(int) _onSetTimeAlarm;
+  final Function(int, List<bool>) _onSetTimeAlarm;
 
   AlarmBody(this._selectedDays, this.alarmId, this._onDeleteAlarm,
       this._onSetTimeAlarm);
@@ -102,7 +102,7 @@ class AlarmBody extends StatelessWidget {
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () {
-                      _onSetTimeAlarm(alarmId);
+                      _onSetTimeAlarm(alarmId, _selectedDays);
                     },
                     child: Text(
                       'Set time',
