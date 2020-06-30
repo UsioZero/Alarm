@@ -94,7 +94,6 @@ class _AlarmBodyState extends State<AlarmBody> {
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      print("Delete button pressed alarmId: $widget.alarmId");
                       widget.onAlarmDelete(this.widget.alarmId);
                     },
                   ),

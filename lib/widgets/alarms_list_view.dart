@@ -31,7 +31,6 @@ class _AlarmsListViewState extends State<AlarmsListView> {
                     widget._alarms[panelIndex].id, isExpanded),
               },
               children: widget._alarms.map<ExpansionPanel>((Alarm alarm) {
-                print('when expansion panel, id: ${alarm.id}');
                 return ExpansionPanel(
                   headerBuilder: (BuildContext context, bool isExpanded) =>
                       new AlarmHeader(alarm.time),
