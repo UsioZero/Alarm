@@ -5,18 +5,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class SimpleNotification {
   TimeOfDay _dateTime = TimeOfDay.now();
   get dateTime => _dateTime;
-
-  Map<String, bool> daySel = {
-    'monday': false,
-    'tuesday': false,
-    'wednesday': false,
-    'thursday': false,
-    'friday': false,
-    'saturday': false,
-    'sunday': false,
-  };
-
-  bool _isFirstTime = true;
   bool isExpanded = false;
 
   int index;
@@ -59,82 +47,80 @@ class SimpleNotification {
     _flutterLocalNotificationsPlugin.cancel(7 * index + 6);
   }
 
-  void notify(TimeOfDay time) {
+  void notify(TimeOfDay _time, bool _isFirstTime, List<bool> _daySel) {
     cancel();
-    _dateTime = time;
-    print(
-        'Day selected ${daySel['monday']} ${daySel['tuesday']} ${daySel['wednesday']} ${daySel['thurseday']} ${daySel['friday']} ${daySel['saturday']} ${daySel['sunday']} \ntime: $time\nindex: $index');
+    _dateTime = _time;
     if (_isFirstTime) {
       _isFirstTime = false;
       _flutterLocalNotificationsPlugin.schedule(
           7 * index,
           "Time is over",
-          "It's adventure time",
+          "It's adventure _time",
           DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, time.hour, time.minute),
+              DateTime.now().day, _time.hour, _time.minute),
           _notificationDetails);
     } else {
-      if (daySel['monday'])
+      if (_daySel[0])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Monday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
 
-      if (daySel['tuesday'])
+      if (_daySel[1])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index + 1,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Tuesday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
 
-      if (daySel['wednesday'])
+      if (_daySel[2])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index + 2,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Wednesday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
 
-      if (daySel['thurseday'])
+      if (_daySel[3])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index + 3,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Thursday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
 
-      if (daySel['friday'])
+      if (_daySel[4])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index + 4,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Friday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
 
-      if (daySel['saturday'])
+      if (_daySel[5])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index + 5,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Saturday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
 
-      if (daySel['sunday'])
+      if (_daySel[6])
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * index + 6,
             "Time is over",
-            "It's adventure time",
+            "It's adventure _time",
             Day.Sunday,
-            Time(time.hour, time.minute),
+            Time(_time.hour, _time.minute),
             _notificationDetails);
     }
   }

@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:alarm/models/lib.dart';
+import 'package:alarm/notifications/simple_notification.dart';
 import 'package:alarm/widgets/lib.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class AlarmList extends StatefulWidget {
 
 class AlarmListState extends State<AlarmList> {
   List<Alarm> _alarms = List();
+  SimpleNotification notification;
 
   // HANDLERS
 
