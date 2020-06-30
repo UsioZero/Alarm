@@ -35,12 +35,11 @@ class AlarmListState extends State<AlarmList> {
         } else {
           notifId = _alarms.last.notificationId + 1;
         }
-        Alarm newAlarm = Alarm(currentTimestamp, notifId, selectedTime,
-            [false, false, false, false, false, false, false]);
+        Alarm newAlarm = Alarm(currentTimestamp, notifId, selectedTime);
         setState(() {
           _alarms.add(newAlarm);
           _notification.notify(_alarms.last.time, _alarms.last.notificationId,
-              _alarms.last.selectedDays, true);
+              [false, false, false, false, false, false, false], true);
         });
       }
     }).catchError((error) {

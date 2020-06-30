@@ -59,16 +59,19 @@ class SimpleNotification {
               DateTime.now().day, time.hour, time.minute),
           _notificationDetails);
     } else {
-      if (daySel[0])
+      print('$time');
+      if (daySel[0]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * notificationId,
+            7 * notificationId + 1,
             "Time is over",
             "It's adventure time",
             Day.Monday,
             Time(time.hour, time.minute),
             _notificationDetails);
-
-      if (daySel[1])
+      }
+      if (daySel[1]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId + 1,
             "Time is over",
@@ -76,8 +79,10 @@ class SimpleNotification {
             Day.Tuesday,
             Time(time.hour, time.minute),
             _notificationDetails);
+      }
 
-      if (daySel[2])
+      if (daySel[2]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId + 2,
             "Time is over",
@@ -85,8 +90,10 @@ class SimpleNotification {
             Day.Wednesday,
             Time(time.hour, time.minute),
             _notificationDetails);
+      }
 
-      if (daySel[3])
+      if (daySel[3]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId + 3,
             "Time is over",
@@ -94,8 +101,9 @@ class SimpleNotification {
             Day.Thursday,
             Time(time.hour, time.minute),
             _notificationDetails);
-
-      if (daySel[4])
+      }
+      if (daySel[4]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId + 4,
             "Time is over",
@@ -103,8 +111,9 @@ class SimpleNotification {
             Day.Friday,
             Time(time.hour, time.minute),
             _notificationDetails);
-
-      if (daySel[5])
+      }
+      if (daySel[5]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId + 5,
             "Time is over",
@@ -112,8 +121,9 @@ class SimpleNotification {
             Day.Saturday,
             Time(time.hour, time.minute),
             _notificationDetails);
-
-      if (daySel[6])
+      }
+      if (daySel[6]) {
+        print('go');
         _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
             7 * notificationId + 6,
             "Time is over",
@@ -121,6 +131,7 @@ class SimpleNotification {
             Day.Sunday,
             Time(time.hour, time.minute),
             _notificationDetails);
+      }
     }
   }
 

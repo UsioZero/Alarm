@@ -34,8 +34,8 @@ class _AlarmsListViewState extends State<AlarmsListView> {
                 return ExpansionPanel(
                   headerBuilder: (BuildContext context, bool isExpanded) =>
                       new AlarmHeader(alarm.time),
-                  body: new AlarmBody(alarm.selectedDays, alarm.id,
-                      widget._onAlarmDelete, widget._onSetTime),
+                  body: new AlarmBody(
+                      alarm.id, widget._onAlarmDelete, widget._onSetTime),
                   isExpanded: alarm.isExpanded,
                   canTapOnHeader: true,
                 );
