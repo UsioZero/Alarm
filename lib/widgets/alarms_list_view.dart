@@ -30,17 +30,17 @@ class _AlarmsListViewState extends State<AlarmsListView> {
                 widget._onAlarmExpand(
                     widget._alarms[panelIndex].id, isExpanded),
               },
-              children: widget._alarms
-                  .map<ExpansionPanel>((Alarm alarm) => ExpansionPanel(
-                        headerBuilder:
-                            (BuildContext context, bool isExpanded) =>
-                                AlarmHeader(alarm.time),
-                        body: AlarmBody(alarm.selectedDays, alarm.id,
-                            widget._onAlarmDelete, widget._onSetTime),
-                        isExpanded: alarm.isExpanded,
-                        canTapOnHeader: true,
-                      ))
-                  .toList(),
+              children: widget._alarms.map<ExpansionPanel>((Alarm alarm) {
+                print('when expansion panel, id: ${alarm.id}');
+                return ExpansionPanel(
+                  headerBuilder: (BuildContext context, bool isExpanded) =>
+                      new AlarmHeader(alarm.time),
+                  body: new AlarmBody(alarm.selectedDays, alarm.id,
+                      widget._onAlarmDelete, widget._onSetTime),
+                  isExpanded: alarm.isExpanded,
+                  canTapOnHeader: true,
+                );
+              }).toList(),
             ),
           ],
         ),

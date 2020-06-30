@@ -40,6 +40,7 @@ class AlarmListState extends State<AlarmList> {
         Alarm newAlarm = Alarm(currentTimestamp, notifId, selectedTime,
             [false, false, false, false, false, false, false]);
         setState(() {
+          print("${_alarms.length}: ${newAlarm.id}");
           _alarms.add(newAlarm);
           _notification.notify(_alarms.last.time, _alarms.last.notificationId,
               _alarms.last.selectedDays, true);
@@ -59,7 +60,11 @@ class AlarmListState extends State<AlarmList> {
 
   void _onAlarmDelete(int alarmId) {
     setState(() {
-      var alarmDel = _alarms.singleWhere((alarm) => alarm.id == alarmId);
+      var alarmDel =
+          _alarms.singleWhere((alarm) => alarm.id == alarmId, orElse: () {
+        print('real id: ${_alarms.first.id},not real $alarmId');
+        return _alarms.last;
+      });
       _notification.cancel(alarmDel.notificationId);
       _alarms.removeWhere((alarm) => alarm.id == alarmId);
     });
@@ -81,7 +86,6 @@ class AlarmListState extends State<AlarmList> {
 
   // Notification handling
   Future _onAndroidSelectNotification(String payload) {
-    print('On android push named');
     return Navigator.of(context).pushNamed('/alert');
   }
 
@@ -97,7 +101,6 @@ class AlarmListState extends State<AlarmList> {
             isDefaultAction: true,
             child: Text('Ok'),
             onPressed: () {
-              print('On IOS select button pressed.');
               Navigator.of(context, rootNavigator: true).pop();
               return Navigator.of(context).pushNamed('/alert');
             },

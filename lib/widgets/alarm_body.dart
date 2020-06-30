@@ -1,15 +1,20 @@
 import 'package:day_selector/day_selector.dart';
 import 'package:flutter/material.dart';
 
-class AlarmBody extends StatelessWidget {
-  final List<bool> _selectedDays;
+class AlarmBody extends StatefulWidget {
+  final List<bool> selectedDays;
   final int alarmId;
-  final Function(int) _onAlarmDelete;
-  final Function(int, List<bool>) _onSetTime;
+  final Function(int) onAlarmDelete;
+  final Function(int, List<bool>) onSetTime;
 
   AlarmBody(
-      this._selectedDays, this.alarmId, this._onAlarmDelete, this._onSetTime);
+      this.selectedDays, this.alarmId, this.onAlarmDelete, this.onSetTime);
 
+  @override
+  _AlarmBodyState createState() => _AlarmBodyState();
+}
+
+class _AlarmBodyState extends State<AlarmBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,52 +27,52 @@ class AlarmBody extends StatelessWidget {
               DaySelector(
                 onChange: (value) {
                   if (DaySelector.monday & value == DaySelector.monday) {
-                    _selectedDays[0] = true;
+                    widget.selectedDays[0] = true;
                   }
                   if (DaySelector.monday & value == 0) {
-                    _selectedDays[0] = false;
+                    widget.selectedDays[0] = false;
                   }
 
                   if (DaySelector.tuesday & value == DaySelector.tuesday) {
-                    _selectedDays[1] = true;
+                    widget.selectedDays[1] = true;
                   }
                   if (DaySelector.tuesday & value == 0) {
-                    _selectedDays[1] = false;
+                    widget.selectedDays[1] = false;
                   }
 
                   if (DaySelector.wednesday & value == DaySelector.wednesday) {
-                    _selectedDays[2] = true;
+                    widget.selectedDays[2] = true;
                   }
                   if (DaySelector.wednesday & value == 0) {
-                    _selectedDays[2] = false;
+                    widget.selectedDays[2] = false;
                   }
 
                   if (DaySelector.thursday & value == DaySelector.thursday) {
-                    _selectedDays[3] = true;
+                    widget.selectedDays[3] = true;
                   }
                   if (DaySelector.thursday & value == 0) {
-                    _selectedDays[3] = false;
+                    widget.selectedDays[3] = false;
                   }
 
                   if (DaySelector.friday & value == DaySelector.friday) {
-                    _selectedDays[4] = true;
+                    widget.selectedDays[4] = true;
                   }
                   if (DaySelector.friday & value == 0) {
-                    _selectedDays[4] = false;
+                    widget.selectedDays[4] = false;
                   }
 
                   if (DaySelector.saturday & value == DaySelector.saturday) {
-                    _selectedDays[5] = true;
+                    widget.selectedDays[5] = true;
                   }
                   if (DaySelector.saturday & value == 0) {
-                    _selectedDays[5] = false;
+                    widget.selectedDays[5] = false;
                   }
 
                   if (DaySelector.sunday & value == DaySelector.sunday) {
-                    _selectedDays[6] = true;
+                    widget.selectedDays[6] = true;
                   }
                   if (DaySelector.sunday & value == 0) {
-                    _selectedDays[6] = false;
+                    widget.selectedDays[6] = false;
                   }
                 },
                 mode: DaySelector.modeFull,
@@ -89,7 +94,8 @@ class AlarmBody extends StatelessWidget {
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      _onAlarmDelete(alarmId);
+                      print("Delete button pressed alarmId: $widget.alarmId");
+                      widget.onAlarmDelete(this.widget.alarmId);
                     },
                   ),
                 ],
@@ -102,7 +108,7 @@ class AlarmBody extends StatelessWidget {
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () {
-                      _onSetTime(alarmId, _selectedDays);
+                      widget.onSetTime(widget.alarmId, widget.selectedDays);
                     },
                     child: Text(
                       'Set time',

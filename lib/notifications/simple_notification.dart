@@ -48,9 +48,6 @@ class SimpleNotification {
       TimeOfDay time, int notificationId, List<bool> daySel, bool isFirstTime) {
     cancel(notificationId);
     _dateTime = time;
-    print('notification:');
-    print(
-        'Day selected ${daySel[0]} ${daySel[1]} ${daySel[2]} ${daySel[3]} ${daySel[4]} ${daySel[5]} ${daySel[6]} \ntime: $time\nnotificationId: $notificationId');
     if (isFirstTime) {
       _flutterLocalNotificationsPlugin.schedule(
           7 * notificationId,

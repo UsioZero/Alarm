@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Alarm {
-  int id;
-  int notificationId;
+  final int id;
+  final int notificationId;
   TimeOfDay time;
   List<bool> selectedDays = new List(7);
   bool isExpanded = false;
