@@ -5,8 +5,10 @@ class AlarmBody extends StatelessWidget {
   final List<bool> _selectedDays;
   final int alarmId;
   final Function(int) _onDeleteAlarm;
+  final Function(int) _onSetTimeAlarm;
 
-  AlarmBody(this._selectedDays, this.alarmId, this._onDeleteAlarm);
+  AlarmBody(this._selectedDays, this.alarmId, this._onDeleteAlarm,
+      this._onSetTimeAlarm);
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,9 @@ class AlarmBody extends StatelessWidget {
                     highlightColor: Theme.of(context).primaryColor,
                     color: Colors.green,
                     textColor: Colors.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      _onSetTimeAlarm(alarmId);
+                    },
                     child: Text(
                       'Set time',
                       style: TextStyle(

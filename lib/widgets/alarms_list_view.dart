@@ -6,8 +6,10 @@ class AlarmsListView extends StatelessWidget {
   final List<Alarm> _alarms;
   final Function(int, bool) _onAlarmExpand;
   final Function(int) _onDeleteAlarm;
+  final Function(int) _onSetTimeAlarm;
 
-  AlarmsListView(this._alarms, this._onAlarmExpand, this._onDeleteAlarm);
+  AlarmsListView(this._alarms, this._onAlarmExpand, this._onDeleteAlarm,
+      this._onSetTimeAlarm);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,8 @@ class AlarmsListView extends StatelessWidget {
                         headerBuilder:
                             (BuildContext context, bool isExpanded) =>
                                 AlarmHeader(alarm.time),
-                        body: AlarmBody(
-                            alarm.selectedDays, alarm.id, _onDeleteAlarm),
+                        body: AlarmBody(alarm.selectedDays, alarm.id,
+                            _onDeleteAlarm, _onSetTimeAlarm),
                         isExpanded: alarm.isExpanded,
                         canTapOnHeader: true,
                       ))

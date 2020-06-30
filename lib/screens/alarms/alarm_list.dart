@@ -47,6 +47,18 @@ class AlarmListState extends State<AlarmList> {
     });
   }
 
+  void _onSetTimeAlarm(int alarmId) {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          var alarm = _alarms.singleWhere((element) => element.id == alarmId);
+          alarm.time = value;
+        });
+      }
+    });
+  }
+
   // Notification handling
   Future _onAndroidSelectNotification(String payload) {
     print('On android push named');
@@ -85,7 +97,8 @@ class AlarmListState extends State<AlarmList> {
           padding: EdgeInsets.only(right: 5),
         ),
       ),
-      body: AlarmsListView(_alarms, _onAlarmExpanded, _onDeleteAlarm),
+      body: AlarmsListView(
+          _alarms, _onAlarmExpanded, _onDeleteAlarm, _onSetTimeAlarm),
       floatingActionButton: FloatingActionButton(
           heroTag: 'plusTag',
           backgroundColor: Colors.blueGrey,
