@@ -5,16 +5,17 @@ import 'lib.dart';
 class AlarmsListView extends StatelessWidget {
   final List<Alarm> _alarms;
   final Function(int, bool) _onAlarmExpand;
+  final Function(int) _onDeleteAlarm;
 
-  AlarmsListView(this._alarms, this._onAlarmExpand);
+  AlarmsListView(this._alarms, this._onAlarmExpand, this._onDeleteAlarm);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.yellow.withOpacity(0.5),
       child: Theme(
-        data:
-        Theme.of(context).copyWith(cardColor: Colors.yellow.withOpacity(0.6)),
+        data: Theme.of(context)
+            .copyWith(cardColor: Colors.yellow.withOpacity(0.6)),
         child: ListView(
           children: <Widget>[
             ExpansionPanelList(
@@ -22,14 +23,15 @@ class AlarmsListView extends StatelessWidget {
                 _onAlarmExpand(_alarms[panelIndex].id, isExpanded),
               },
               children: _alarms
-                  .map<ExpansionPanel>((Alarm alarm) =>
-                  ExpansionPanel(
-                      headerBuilder: (BuildContext context, bool isExpanded) =>
-                          AlarmHeader(alarm.time),
-                      body: AlarmBody(alarm.selectedDays),
-                      isExpanded: alarm.isExpanded,
-                      canTapOnHeader: true,
-                  ))
+                  .map<ExpansionPanel>((Alarm alarm) => ExpansionPanel(
+                        headerBuilder:
+                            (BuildContext context, bool isExpanded) =>
+                                AlarmHeader(alarm.time),
+                        body: AlarmBody(
+                            alarm.selectedDays, alarm.id, _onDeleteAlarm),
+                        isExpanded: alarm.isExpanded,
+                        canTapOnHeader: true,
+                      ))
                   .toList(),
             ),
           ],

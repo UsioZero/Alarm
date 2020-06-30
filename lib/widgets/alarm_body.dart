@@ -2,10 +2,11 @@ import 'package:day_selector/day_selector.dart';
 import 'package:flutter/material.dart';
 
 class AlarmBody extends StatelessWidget {
+  final List<bool> _selectedDays;
+  final int alarmId;
+  final Function(int) _onDeleteAlarm;
 
-  final List<int> _selectedDays;
-
-  AlarmBody(this._selectedDays);
+  AlarmBody(this._selectedDays, this.alarmId, this._onDeleteAlarm);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,59 @@ class AlarmBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              DaySelector()
+              DaySelector(
+                mode: DaySelector.modeFull,
+                onChange: (value) {
+                  if (DaySelector.monday & value == DaySelector.monday) {
+                    _selectedDays[0] = true;
+                  }
+                  if (DaySelector.monday & value == 0) {
+                    _selectedDays[0] = false;
+                  }
+
+                  if (DaySelector.tuesday & value == DaySelector.tuesday) {
+                    _selectedDays[1] = true;
+                  }
+                  if (DaySelector.tuesday & value == 0) {
+                    _selectedDays[1] = false;
+                  }
+
+                  if (DaySelector.wednesday & value == DaySelector.wednesday) {
+                    _selectedDays[2] = true;
+                  }
+                  if (DaySelector.wednesday & value == 0) {
+                    _selectedDays[2] = false;
+                  }
+
+                  if (DaySelector.thursday & value == DaySelector.thursday) {
+                    _selectedDays[3] = true;
+                  }
+                  if (DaySelector.thursday & value == 0) {
+                    _selectedDays[3] = false;
+                  }
+
+                  if (DaySelector.friday & value == DaySelector.friday) {
+                    _selectedDays[4] = true;
+                  }
+                  if (DaySelector.friday & value == 0) {
+                    _selectedDays[4] = false;
+                  }
+
+                  if (DaySelector.saturday & value == DaySelector.saturday) {
+                    _selectedDays[5] = true;
+                  }
+                  if (DaySelector.saturday & value == 0) {
+                    _selectedDays[5] = false;
+                  }
+
+                  if (DaySelector.sunday & value == DaySelector.sunday) {
+                    _selectedDays[6] = true;
+                  }
+                  if (DaySelector.sunday & value == 0) {
+                    _selectedDays[6] = false;
+                  }
+                },
+              )
             ],
           ),
           Row(
@@ -33,18 +86,17 @@ class AlarmBody extends StatelessWidget {
                       ),
                       backgroundColor: Colors.red,
                     ),
+                    onPressed: () {
+                      _onDeleteAlarm(alarmId);
+                    },
                   ),
                 ],
               ),
               Column(
                 children: <Widget>[
                   RaisedButton(
-                    splashColor: Theme
-                        .of(context)
-                        .primaryColor,
-                    highlightColor: Theme
-                        .of(context)
-                        .primaryColor,
+                    splashColor: Theme.of(context).primaryColor,
+                    highlightColor: Theme.of(context).primaryColor,
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () {},
@@ -64,7 +116,6 @@ class AlarmBody extends StatelessWidget {
       ),
     );
   }
-
 }
 
 //
@@ -87,52 +138,52 @@ class AlarmBody extends StatelessWidget {
 //        DaySelector(
 //          onChange: (value) {
 //            if (DaySelector.monday & value == DaySelector.monday) {
-//              oneNotify.daySel['monday'] = true;
+//              _selectedDays[0] = true;
 //            }
 //            if (DaySelector.monday & value == 0) {
-//              oneNotify.daySel['monday'] = false;
+//              _selectedDays[0] = false;
 //            }
 //
 //            if (DaySelector.tuesday & value == DaySelector.tuesday) {
-//              oneNotify.daySel['tuesday'] = true;
+//              _selectedDays[1] = true;
 //            }
 //            if (DaySelector.tuesday & value == 0) {
-//              oneNotify.daySel['tuesday'] = false;
+//              _selectedDays[1] = false;
 //            }
 //
 //            if (DaySelector.wednesday & value == DaySelector.wednesday) {
-//              oneNotify.daySel['wednesday'] = true;
+//              _selectedDays[2] = true;
 //            }
 //            if (DaySelector.wednesday & value == 0) {
-//              oneNotify.daySel['wednesday'] = false;
+//              _selectedDays[2] = false;
 //            }
 //
 //            if (DaySelector.thursday & value == DaySelector.thursday) {
-//              oneNotify.daySel['thurseday'] = true;
+//              _selectedDays[3] = true;
 //            }
 //            if (DaySelector.thursday & value == 0) {
-//              oneNotify.daySel['thurseday'] = false;
+//              _selectedDays[3] = false;
 //            }
 //
 //            if (DaySelector.friday & value == DaySelector.friday) {
-//              oneNotify.daySel['friday'] = true;
+//              _selectedDays[4] = true;
 //            }
 //            if (DaySelector.friday & value == 0) {
-//              oneNotify.daySel['friday'] = false;
+//              _selectedDays[4] = false;
 //            }
 //
 //            if (DaySelector.saturday & value == DaySelector.saturday) {
-//              oneNotify.daySel['saturday'] = true;
+//              _selectedDays[5] = true;
 //            }
 //            if (DaySelector.saturday & value == 0) {
-//              oneNotify.daySel['saturday'] = false;
+//              _selectedDays[5] = false;
 //            }
 //
 //            if (DaySelector.sunday & value == DaySelector.sunday) {
-//              oneNotify.daySel['sunday'] = true;
+//              _selectedDays[6] = true;
 //            }
 //            if (DaySelector.sunday & value == 0) {
-//              oneNotify.daySel['sunday'] = false;
+//              _selectedDays[6] = false;
 //            }
 //          },
 //          mode: DaySelector.modeFull,

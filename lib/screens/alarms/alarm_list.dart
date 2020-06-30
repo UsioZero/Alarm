@@ -22,14 +22,14 @@ class AlarmListState extends State<AlarmList> {
         .then((selectedTime) {
       if (selectedTime != null) {
         int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-        Alarm newAlarm = Alarm(currentTimestamp, selectedTime, []);
+        Alarm newAlarm = Alarm(currentTimestamp, selectedTime,
+            [false, false, false, false, false, false, false]);
 
         setState(() {
           _alarms.add(newAlarm);
         });
       }
-    })
-        .catchError((error) {
+    }).catchError((error) {
       print(error);
     });
   }
@@ -38,6 +38,12 @@ class AlarmListState extends State<AlarmList> {
     setState(() {
       var updatedAlarm = _alarms.singleWhere((alarm) => alarm.id == alarmId);
       updatedAlarm.isExpanded = !isExpanded;
+    });
+  }
+
+  void _onDeleteAlarm(int alarmId) {
+    setState(() {
+      _alarms.removeWhere((alarm) => alarm.id == alarmId);
     });
   }
 
@@ -79,15 +85,14 @@ class AlarmListState extends State<AlarmList> {
           padding: EdgeInsets.only(right: 5),
         ),
       ),
-      body: AlarmsListView(_alarms, _onAlarmExpanded),
+      body: AlarmsListView(_alarms, _onAlarmExpanded, _onDeleteAlarm),
       floatingActionButton: FloatingActionButton(
           heroTag: 'plusTag',
           backgroundColor: Colors.blueGrey,
           foregroundColor: Colors.white,
           //shape: ShapeBorder,
           child: Icon(Icons.add),
-          onPressed: _onAddNewAlarm
-      ),
+          onPressed: _onAddNewAlarm),
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),
