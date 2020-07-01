@@ -1,43 +1,24 @@
 //LIBRARIES
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SimpleNotification {
-  TimeOfDay _dateTime = TimeOfDay.now();
-  get dateTime => _dateTime;
+  TimeOfDay dateTime = TimeOfDay.now();
   bool isExpanded = false;
-
   int index;
-
-  static const AndroidNotificationDetails _androidDetails =
-      AndroidNotificationDetails(
-          'channel id', 'channel name', 'channel description',
-          importance: Importance.Max,
-          priority: Priority.High,
-          ticker: 'test ticker',
-          sound: RawResourceAndroidNotificationSound('alarm_sound'));
-  static const IOSNotificationDetails _iosDetails = IOSNotificationDetails();
-  NotificationDetails _notificationDetails =
-      NotificationDetails(_androidDetails, _iosDetails);
-
+  BuildContext context;
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+  List<AndroidNotificationDetails> androidSpec = new List();
+  List<NotificationDetails> notificationDetails = new List();
 
-  SimpleNotification(androidCallback, iosCallback, index,
+  SimpleNotification(this.context, this._flutterLocalNotificationsPlugin,
       {this.isExpanded = false}) {
-    this._dateTime = _dateTime;
+    this.dateTime = dateTime;
     this.index = index;
-    var initSetAndroid = new AndroidInitializationSettings('hourglasses');
-    var initSetIos = new IOSInitializationSettings(
-        onDidReceiveLocalNotification: iosCallback);
-    var initSet = new InitializationSettings(initSetAndroid, initSetIos);
-
-    _flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-
-    _flutterLocalNotificationsPlugin.initialize(initSet,
-        onSelectNotification: androidCallback);
   }
 
-  void cancel() {
+  void cancel(int index) {
     _flutterLocalNotificationsPlugin.cancel(7 * index);
     _flutterLocalNotificationsPlugin.cancel(7 * index + 1);
     _flutterLocalNotificationsPlugin.cancel(7 * index + 2);
@@ -47,81 +28,115 @@ class SimpleNotification {
     _flutterLocalNotificationsPlugin.cancel(7 * index + 6);
   }
 
-  void notify(TimeOfDay _time, bool _isFirstTime, List<bool> _daySel) {
-    cancel();
-    _dateTime = _time;
-    if (_isFirstTime) {
-      _isFirstTime = false;
-      _flutterLocalNotificationsPlugin.schedule(
+  void specInstall() {
+    androidSpec = [];
+    notificationDetails = [];
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    androidSpec.add(AndroidNotificationDetails('show weekly channel id',
+        'show weekly channel name', 'show weekly description',
+        priority: Priority.High,
+        sound: RawResourceAndroidNotificationSound('alarm_sound')));
+    notificationDetails.add(NotificationDetails(androidSpec[0], null));
+    notificationDetails.add(NotificationDetails(androidSpec[1], null));
+    notificationDetails.add(NotificationDetails(androidSpec[2], null));
+    notificationDetails.add(NotificationDetails(androidSpec[3], null));
+    notificationDetails.add(NotificationDetails(androidSpec[4], null));
+    notificationDetails.add(NotificationDetails(androidSpec[5], null));
+    notificationDetails.add(NotificationDetails(androidSpec[6], null));
+  }
+
+  Future notify(TimeOfDay time, List<bool> daySel, int index) async {
+    cancel(index);
+    specInstall();
+    dateTime = time;
+    print('time: $dateTime');
+    print('index: $index');
+
+    if (daySel[0])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
           7 * index,
           "Time is over",
-          "It's adventure _time",
-          DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, _time.hour, _time.minute),
-          _notificationDetails);
-    } else {
-      if (_daySel[0])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index,
-            "Time is over",
-            "It's adventure _time",
-            Day.Monday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
+          "It's adventure time",
+          Day.Monday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[0]);
 
-      if (_daySel[1])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index + 1,
-            "Time is over",
-            "It's adventure _time",
-            Day.Tuesday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
+    if (daySel[1])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+          7 * index + 1,
+          "Time is over",
+          "It's adventure time",
+          Day.Tuesday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[1]);
 
-      if (_daySel[2])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index + 2,
-            "Time is over",
-            "It's adventure _time",
-            Day.Wednesday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
+    if (daySel[2])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+          7 * index + 2,
+          "Time is over",
+          "It's adventure time",
+          Day.Wednesday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[2]);
 
-      if (_daySel[3])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index + 3,
-            "Time is over",
-            "It's adventure _time",
-            Day.Thursday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
+    if (daySel[3])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+          7 * index + 3,
+          "Time is over",
+          "It's adventure time",
+          Day.Thursday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[3]);
 
-      if (_daySel[4])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index + 4,
-            "Time is over",
-            "It's adventure _time",
-            Day.Friday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
+    if (daySel[4])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+          7 * index + 4,
+          "Time is over",
+          "It's adventure time",
+          Day.Friday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[4]);
 
-      if (_daySel[5])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index + 5,
-            "Time is over",
-            "It's adventure _time",
-            Day.Saturday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
+    if (daySel[5])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+          7 * index + 5,
+          "Time is over",
+          "It's adventure time",
+          Day.Saturday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[5]);
 
-      if (_daySel[6])
-        _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-            7 * index + 6,
-            "Time is over",
-            "It's adventure _time",
-            Day.Sunday,
-            Time(_time.hour, _time.minute),
-            _notificationDetails);
-    }
+    if (daySel[6])
+      await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+          7 * index + 6,
+          "Time is over",
+          "It's adventure time",
+          Day.Sunday,
+          Time(dateTime.hour, dateTime.minute),
+          notificationDetails[6]);
+    print('${daySel[6]}');
   }
 }

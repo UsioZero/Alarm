@@ -1,8 +1,5 @@
 // LIBRARIES
-import 'dart:async';
-
 import 'package:alarm/models/lib.dart';
-import 'package:alarm/notifications/simple_notification.dart';
 import 'package:alarm/widgets/lib.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,31 +12,38 @@ class AlarmList extends StatefulWidget {
 
 class AlarmListState extends State<AlarmList> {
   List<Alarm> _alarms = List();
-  SimpleNotification notification;
+  //SimpleNotification notification;
+
+  @override
+  void initState() {
+    //   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    //       FlutterLocalNotificationsPlugin();
+    //   var initializationSettingsAndroid =
+    //       AndroidInitializationSettings('hourglasses');
+    //   var initializationSettingsIOS = IOSInitializationSettings(
+    //       onDidReceiveLocalNotification: _onIOSSelectNotification);
+    //   var initializationSettings = InitializationSettings(
+    //       initializationSettingsAndroid, initializationSettingsIOS);
+    //   flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    //       onSelectNotification: _onAndroidSelectNotification);
+    setState(() {});
+    super.initState();
+  }
 
   // HANDLERS
-
   void _onAddNewAlarm() {
-    showTimePicker(context: context, initialTime: TimeOfDay.now())
-        .then((selectedTime) {
-      if (selectedTime != null) {
-        int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-        Alarm newAlarm = Alarm(currentTimestamp, selectedTime,
-            [false, false, false, false, false, false, false]);
-
-        setState(() {
-          _alarms.add(newAlarm);
-        });
-      }
-    }).catchError((error) {
-      print(error);
+    setState(() {
+      int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+      var newAlarm = Alarm(currentTimestamp, TimeOfDay.now(),
+          [false, false, false, false, false, false, false]);
+      _alarms.add(newAlarm);
     });
   }
 
   void _onAlarmExpanded(int alarmId, bool isExpanded) {
     setState(() {
-      var updatedAlarm = _alarms.singleWhere((alarm) => alarm.id == alarmId);
-      updatedAlarm.isExpanded = !isExpanded;
+      _alarms[alarmId].isExpanded = !_alarms[alarmId].isExpanded;
+      isExpanded = !_alarms[alarmId].isExpanded;
     });
   }
 
@@ -54,40 +58,39 @@ class AlarmListState extends State<AlarmList> {
         .then((value) {
       if (value != null) {
         setState(() {
-          var alarm = _alarms.singleWhere((element) => element.id == alarmId);
-          alarm.time = value;
+          _alarms.singleWhere((element) => element.id == alarmId).time = value;
         });
       }
     });
   }
 
   // Notification handling
-  Future _onAndroidSelectNotification(String payload) {
-    print('On android push named');
-    return Navigator.of(context).pushNamed('/alert');
-  }
+  // Future _onAndroidSelectNotification(String payload) {
+  //   print('On android push named');
+  //   return Navigator.of(context).pushNamed('/alert');
+  // }
 
-  Future _onIOSSelectNotification(
-      int id, String title, String body, String payload) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(body),
-        actions: [
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: Text('Ok'),
-            onPressed: () {
-              print('On IOS select button pressed.');
-              Navigator.of(context, rootNavigator: true).pop();
-              return Navigator.of(context).pushNamed('/alert');
-            },
-          )
-        ],
-      ),
-    );
-  }
+  // Future _onIOSSelectNotification(
+  //     int id, String title, String body, String payload) async {
+  //   // display a dialog with the notification details, tap ok to go to another page
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) => CupertinoAlertDialog(
+  //       title: Text(title),
+  //       content: Text(body),
+  //       actions: [
+  //         CupertinoDialogAction(
+  //           isDefaultAction: true,
+  //           child: Text('Ok'),
+  //           onPressed: () async {
+  //             Navigator.of(context, rootNavigator: true).pop();
+  //             await Navigator.pushNamed(context, '/alert');
+  //           },
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,9 @@ class AlarmListState extends State<AlarmList> {
           foregroundColor: Colors.white,
           //shape: ShapeBorder,
           child: Icon(Icons.add),
-          onPressed: _onAddNewAlarm),
+          onPressed: () {
+            _onAddNewAlarm();
+          }),
       bottomNavigationBar: BottomAppBar(
         color: Colors.yellow,
         child: Container(height: 50.0),

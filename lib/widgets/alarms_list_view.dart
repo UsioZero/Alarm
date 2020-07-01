@@ -2,7 +2,7 @@ import 'package:alarm/models/lib.dart';
 import 'package:flutter/material.dart';
 import 'lib.dart';
 
-class AlarmsListView extends StatelessWidget {
+class AlarmsListView extends StatefulWidget {
   final List<Alarm> _alarms;
   final Function(int, bool) _onAlarmExpand;
   final Function(int) _onDeleteAlarm;
@@ -11,6 +11,11 @@ class AlarmsListView extends StatelessWidget {
   AlarmsListView(this._alarms, this._onAlarmExpand, this._onDeleteAlarm,
       this._onSetTimeAlarm);
 
+  @override
+  _AlarmsListViewState createState() => _AlarmsListViewState();
+}
+
+class _AlarmsListViewState extends State<AlarmsListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,16 +26,16 @@ class AlarmsListView extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             ExpansionPanelList(
-              expansionCallback: (panelIndex, isExpanded) => {
-                _onAlarmExpand(_alarms[panelIndex].id, isExpanded),
-              },
-              children: _alarms
+              key: Key(widget._alarms.length.toString()),
+              expansionCallback: (int panelIndex, bool isExpanded) =>
+                  widget._onAlarmExpand(panelIndex, isExpanded),
+              children: widget._alarms
                   .map<ExpansionPanel>((Alarm alarm) => ExpansionPanel(
                         headerBuilder:
                             (BuildContext context, bool isExpanded) =>
                                 AlarmHeader(alarm.time),
                         body: AlarmBody(alarm.selectedDays, alarm.id,
-                            _onDeleteAlarm, _onSetTimeAlarm),
+                            widget._onDeleteAlarm, widget._onSetTimeAlarm),
                         isExpanded: alarm.isExpanded,
                         canTapOnHeader: true,
                       ))
